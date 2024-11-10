@@ -1,0 +1,39 @@
+{
+  "name": "@brick/client",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "dev:react": "RENDER_TYPE=csr vite --config src/react/vite.config.mts",
+    "build:react": "RENDER_TYPE=ssr vite build --config src/react/vite.config.mts",
+    "dev:vue": "RENDER_TYPE=csr vite --config src/vue/vite.config.mts",
+    "build:vue": "RENDER_TYPE=ssr vite build --config src/vue/vite.config.mts",
+    "dev:solid": "RENDER_TYPE=csr vite --config src/solid/vite.config.mts",
+    "build:solid": "RENDER_TYPE=ssr vite build --config src/solid/vite.config.mts",
+    "prebuild": "rm -rf dist",
+    "build": "pnpm build:react && pnpm build:vue && pnpm build:solid"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@brick/react": "workspace:*",
+    "@brick/vue": "workspace:*",
+    "@brick/solid": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "solid-js": "^1.9.3",
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.7",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.9",
+    "vite-plugin-solid": "^2.10.2"
+  }
+}

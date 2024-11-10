@@ -1,0 +1,48 @@
+{
+  "name": "@brick/server",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "NODE_ENV=development ts-node src/index.ts",
+    "compile:react": "vite build --ssr render/react/index.ts --config render/react/vite.config.mts",
+    "compile:vue": "vite build --ssr render/vue/index.ts --config render/vue/vite.config.mts",
+    "compile:solid": "vite build --ssr render/solid/index.ts --config render/solid/vite.config.mts",
+    "precompile": "rm -rf lib",
+    "compile": "pnpm compile:react && pnpm compile:vue && pnpm compile:solid",
+    "tsc": "tsc && resolve-tspaths",
+    "prebuild": "rm -rf dist",
+    "build": "pnpm compile && pnpm tsc",
+    "start": "NODE_ENV=production node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@brick/client": "workspace:*",
+    "@brick/react": "workspace:*",
+    "@brick/solid": "workspace:*",
+    "@brick/vue": "workspace:*",
+    "@vitejs/plugin-react": "^4.3.3",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "koa": "^2.15.3",
+    "koa-mount": "^4.0.0",
+    "koa-router": "^13.0.1",
+    "koa-static": "^5.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "solid-js": "^1.9.3",
+    "vite": "^5.4.9",
+    "vite-plugin-solid": "^2.10.2",
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.15.0",
+    "@types/koa-mount": "^4.0.5",
+    "@types/koa-router": "^7.4.8",
+    "@types/koa-static": "^4.0.4",
+    "resolve-tspaths": "^0.8.22",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}

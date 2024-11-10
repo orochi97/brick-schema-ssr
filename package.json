@@ -1,0 +1,12 @@
+{
+  "name": "brick-schema-ssr",
+  "version": "1.0.0",
+  "description": "low code, multiple frontend frame, ssr",
+  "scripts": {
+    "build": "pnpm --filter @brick/core build && pnpm --filter @brick/react build && pnpm --filter @brick/vue build && pnpm --filter @brick/solid build && pnpm --filter @brick/client build && pnpm --filter @brick/server build",
+    "server": "pnpm --filter @brick/server start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
