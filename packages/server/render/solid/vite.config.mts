@@ -11,9 +11,9 @@ export default defineConfig({
       formats: ['cjs'],
     },
     rollupOptions: {
-      external: [/^solid/]
+      external: [/^solid/],
     },
     outDir: path.resolve(process.cwd(), 'lib/solid'),
     emptyOutDir: true,
-  }
+  },
 });

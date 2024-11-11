@@ -32,6 +32,6 @@ app.listen(PORT, () => {
     `Server listening on port ${PORT}:
     http://localhost:${PORT}/ssr/react
     http://localhost:${PORT}/ssr/vue
-    http://localhost:${PORT}/ssr/solid`
+    http://localhost:${PORT}/ssr/solid`,
   );
 });

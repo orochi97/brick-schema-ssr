@@ -1,4 +1,4 @@
-import { renderToString, hydrate, render, generateHydrationScript } from "solid-js/web";
+import { renderToString, hydrate, render, generateHydrationScript } from 'solid-js/web';
 import { BaseSdk } from '@brick/core';
 
 import { App } from './app';
@@ -8,12 +8,12 @@ export class RenderSdk extends BaseSdk {
     await this.initSchemas();
 
     render(() => <App {...this.appProps} />, $dom);
-  }
+  };
   hydrateRoot = async ($dom: HTMLElement) => {
     await this.initSchemas();
 
     hydrate(() => <App {...this.appProps} />, $dom);
-  }
+  };
   renderToString = async () => {
     await this.initSchemas();
 
@@ -21,5 +21,5 @@ export class RenderSdk extends BaseSdk {
     const headerText = generateHydrationScript();
 
     return { domText, headerText };
-  }
+  };
 }

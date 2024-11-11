@@ -12,5 +12,5 @@ export default genConfig({
   plugins: [vue(), vueJsx()],
   build: {
     outDir: path.resolve(process.cwd(), 'dist/vue'),
-  }
+  },
 });

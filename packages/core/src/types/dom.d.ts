@@ -1,4 +1,3 @@
-
 // import * as CSS from 'csstype';
 
 // type Properties = import('csstype').Properties;
@@ -21,7 +20,16 @@
 
 type StyleValue = import('csstype').Properties;
 
-type HTMLAttributeReferrerPolicy = '' | 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url';
+type HTMLAttributeReferrerPolicy =
+  | ''
+  | 'no-referrer'
+  | 'no-referrer-when-downgrade'
+  | 'origin'
+  | 'origin-when-cross-origin'
+  | 'same-origin'
+  | 'strict-origin'
+  | 'strict-origin-when-cross-origin'
+  | 'unsafe-url';
 
 type Booleanish = boolean | 'true' | 'false';
 type Numberish = number | string;
@@ -258,7 +266,17 @@ interface AriaAttributes {
    * Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
    * @see aria-atomic.
    */
-  'aria-relevant'?: 'additions' | 'additions removals' | 'additions text' | 'all' | 'removals' | 'removals additions' | 'removals text' | 'text' | 'text additions' | 'text removals';
+  'aria-relevant'?:
+    | 'additions'
+    | 'additions removals'
+    | 'additions text'
+    | 'all'
+    | 'removals'
+    | 'removals additions'
+    | 'removals text'
+    | 'text'
+    | 'text additions'
+    | 'text removals';
   /** Indicates that user input is required on the element before a form may be submitted. */
   'aria-required'?: Booleanish;
   /** Defines a human-readable, author-localized description for the role of an element. */

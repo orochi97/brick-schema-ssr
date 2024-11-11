@@ -3,7 +3,7 @@ import { RenderSdk } from '@brick/solid';
 import '../index.css';
 
 const init = async () => {
-  const schemas = await fetch('/api/schemas').then(res => res.json());
+  const schemas = await fetch('/api/schemas').then((res) => res.json());
 
   const startTime = performance.now();
 
@@ -19,6 +19,6 @@ const init = async () => {
   }
 
   console.info(`render in ${process.env.RENDER_TYPE}, cost time: ${performance.now() - startTime} ms`);
-}
+};
 
 init();

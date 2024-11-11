@@ -11,5 +11,5 @@ export default genConfig({
   plugins: [solid({ dev: true })],
   build: {
     outDir: path.resolve(process.cwd(), 'dist/solid'),
-  }
+  },
 });

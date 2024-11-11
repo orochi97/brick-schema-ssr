@@ -1,7 +1,7 @@
 import { libraries } from '../library';
 
 let schemasContext: {
-  Provider: () => JSX.Element
+  Provider: () => JSX.Element;
 };
 
 export const getSchemasContext = () => {
@@ -10,4 +10,4 @@ export const getSchemasContext = () => {
   }
   schemasContext = libraries.createContext();
   return schemasContext;
-}
+};

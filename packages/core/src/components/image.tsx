@@ -3,31 +3,30 @@ import { libraries } from '../library';
 import type { Styles, ComponentItem } from '../types';
 
 export interface ImageProps {
-  id: number,
+  id: number;
   props: {
     src: string;
-    width?: number,
-    height?: number,
+    width?: number;
+    height?: number;
     onClick?: (() => void) | string;
-  },
-  styles: Styles,
+  };
+  styles: Styles;
 }
 
 const baseProps = {
   onClick: `return async () => {
     console.log('Image onClick')
-  }`
+  }`,
 };
 
-const baseStyle = {
-}
+const baseStyle = {};
 
-export const initImageSchemas = <T extends object = object,>(compProps: ComponentItem, lib: T) => {
+export const initImageSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
   if (compProps.component === 'Image') {
-    const props = compProps.props || structuredClone(baseProps) as typeof baseProps;
+    const props = compProps.props || (structuredClone(baseProps) as typeof baseProps);
     const funBody = isString(props?.onClick) ? props?.onClick : baseProps.onClick;
     const onClick = () => {
-      (new Function('lib', funBody)(lib))();
+      new Function('lib', funBody)(lib)();
     };
     props.onClick = onClick;
     return Object.assign({}, compProps, { props });
@@ -38,9 +37,17 @@ export const initImageSchemas = <T extends object = object,>(compProps: Componen
 export const Image = ({ props, styles = {} }: ImageProps) => {
   const onClick = () => {
     if (isFunction(props?.onClick)) {
-      props?.onClick()
+      props?.onClick();
     }
-  }
+  };
 
-  return <img src={props?.src} width={props?.width} height={props?.height} style={libraries.useStyles(styles)}  onClick={onClick} />
+  return (
+    <img
+      src={props?.src}
+      width={props?.width}
+      height={props?.height}
+      style={libraries.useStyles(styles)}
+      onClick={onClick}
+    />
+  );
 };

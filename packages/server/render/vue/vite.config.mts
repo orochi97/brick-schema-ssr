@@ -12,9 +12,9 @@ export default defineConfig({
       formats: ['cjs'],
     },
     rollupOptions: {
-      external: [/^vue/]
+      external: [/^vue/],
     },
     outDir: path.resolve(process.cwd(), 'lib/vue'),
     emptyOutDir: true,
-  }
+  },
 });

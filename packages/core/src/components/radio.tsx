@@ -4,13 +4,13 @@ import { libraries } from '../library';
 import type { BaseValue, Styles, ComponentItem } from '../types';
 
 export interface RadioProps {
-  cid: number,
+  cid: number;
   props: {
-    options: { value: BaseValue, label: string, disabled?: boolean }[];
-    onChange?: ((value: BaseValue) => void) | string
-  },
-  styles: Styles,
-  value?: BaseValue,
+    options: { value: BaseValue; label: string; disabled?: boolean }[];
+    onChange?: ((value: BaseValue) => void) | string;
+  };
+  styles: Styles;
+  value?: BaseValue;
 }
 
 const baseValue = undefined;
@@ -19,7 +19,7 @@ const baseProps = {
   options: [],
   onChange: `return async (context) => {
     console.log('Radio onchange', context)
-  }`
+  }`,
 };
 
 const baseStyle = {
@@ -27,16 +27,16 @@ const baseStyle = {
     cursor: 'pointer',
   },
   disabled: {
-    cursor: 'not-allowed'
-  }
-}
+    cursor: 'not-allowed',
+  },
+};
 
 export const initRadioSchemas = (compProps: ComponentItem, lib: any) => {
   if (compProps.component === 'Radio') {
     const props = compProps.props || structuredClone(baseProps);
     const funBody = isString(props?.onChange) ? props.onChange : baseProps.onChange;
     const onChange = (value: BaseValue) => {
-      (new Function('lib', funBody)(lib))(value);
+      new Function('lib', funBody)(lib)(value);
     };
     props.onChange = onChange;
     return Object.assign({}, compProps, { props, value: baseValue });
@@ -55,17 +55,26 @@ export const Radio = ({ cid, props, styles = {}, value }: RadioProps) => {
       props?.onChange?.(newVal);
     }
     changeSchemasValue(cid, newVal);
-  }
+  };
 
-  return <span style={libraries.useStyles(style)}>
-    {
-      props?.options?.map(({ value: itemValue, label, disabled }) => {
-        const optionStyle = Object.assign({}, baseStyle.label, disabled ? baseStyle.disabled : {} )
-        return (<label key={itemValue} html-for={itemValue} style={libraries.useStyles(optionStyle)}>
-          <input type="radio" value={itemValue} checked={itemValue === value} disabled={disabled} style={libraries.useStyles(optionStyle)} onChange={() => onChange(itemValue)}/>
-          {label}
-          </label>)
-      })
-    }
-  </span>
+  return (
+    <span style={libraries.useStyles(style)}>
+      {props?.options?.map(({ value: itemValue, label, disabled }) => {
+        const optionStyle = Object.assign({}, baseStyle.label, disabled ? baseStyle.disabled : {});
+        return (
+          <label key={itemValue} html-for={itemValue} style={libraries.useStyles(optionStyle)}>
+            <input
+              type="radio"
+              value={itemValue}
+              checked={itemValue === value}
+              disabled={disabled}
+              style={libraries.useStyles(optionStyle)}
+              onChange={() => onChange(itemValue)}
+            />
+            {label}
+          </label>
+        );
+      })}
+    </span>
+  );
 };

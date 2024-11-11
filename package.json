@@ -4,9 +4,13 @@
   "description": "low code, multiple frontend frame, ssr",
   "scripts": {
     "build": "pnpm --filter @brick/core build && pnpm --filter @brick/react build && pnpm --filter @brick/vue build && pnpm --filter @brick/solid build && pnpm --filter @brick/client build && pnpm --filter @brick/server build",
-    "server": "pnpm --filter @brick/server start"
+    "server": "pnpm --filter @brick/server start",
+    "prettier": "prettier packages/**/*.{mts,ts,tsx} --write"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  }
 }

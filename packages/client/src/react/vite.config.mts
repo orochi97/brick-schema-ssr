@@ -11,5 +11,5 @@ export default genConfig({
   plugins: [react()],
   build: {
     outDir: path.resolve(process.cwd(), 'dist/react'),
-  }
+  },
 });

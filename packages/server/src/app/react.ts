@@ -20,7 +20,7 @@ app.use(async (ctx) => {
     });
     const { RenderSdk } = await vite.ssrLoadModule('@brick/react');
     const sdk = new RenderSdk({ schemas });
-  
+
     renderToString = sdk.renderToString;
   } else {
     renderToString = (await import('@/lib/react')).renderToString;

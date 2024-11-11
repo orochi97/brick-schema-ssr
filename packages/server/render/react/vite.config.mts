@@ -11,9 +11,9 @@ export default defineConfig({
       formats: ['cjs'],
     },
     rollupOptions: {
-      external: [/^react/]
+      external: [/^react/],
     },
     outDir: path.resolve(process.cwd(), 'lib/react'),
     emptyOutDir: true,
-  }
+  },
 });

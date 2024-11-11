@@ -1,4 +1,10 @@
-import { type ButtonProps, type SelectProps, type CheckboxProps, type RadioProps, type ImageProps } from '../components';
+import {
+  type ButtonProps,
+  type SelectProps,
+  type CheckboxProps,
+  type RadioProps,
+  type ImageProps,
+} from '../components';
 
 export type Styles = StyleValue;
 
@@ -11,7 +17,7 @@ export interface ComponentProps {
   Checkbox: CheckboxProps;
   Select: SelectProps;
   Radio: RadioProps;
-  Image: ImageProps,
+  Image: ImageProps;
 }
 
 export type UnionProps = ValueOf<{
@@ -20,7 +26,7 @@ export type UnionProps = ValueOf<{
   Select: SelectProps['props'];
   Radio: RadioProps['props'];
   Image: ImageProps['props'];
-}>
+}>;
 
 export type ComponentItem = {
   [K in keyof ComponentProps]: {
@@ -31,9 +37,9 @@ export type ComponentItem = {
 
 export interface Schemas {
   app: {
-    init: string,
-  },
-  components: ComponentItem[]
+    init: string;
+  };
+  components: ComponentItem[];
 }
 
 export type SetPropsFun = (cid: number, props: UnionProps) => void;
@@ -43,6 +49,6 @@ export type SetValueFun = (cid: number, value: BaseValue) => void;
 export type InjectDependentFun = (setProps: SetPropsFun, setValue: SetValueFun) => void;
 
 export interface AppProps {
-  schemas: Schemas,
-  injectDependentFun: InjectDependentFun,
+  schemas: Schemas;
+  injectDependentFun: InjectDependentFun;
 }
