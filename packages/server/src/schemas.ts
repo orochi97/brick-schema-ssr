@@ -1,3 +1,5 @@
+// import { type Schemas } from '@brick/core';
+
 export const schemas = {
   app: {
     init: `

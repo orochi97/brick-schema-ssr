@@ -5,12 +5,16 @@
   "scripts": {
     "build": "pnpm --filter @brick/core build && pnpm --filter @brick/react build && pnpm --filter @brick/vue build && pnpm --filter @brick/solid build && pnpm --filter @brick/client build && pnpm --filter @brick/server build",
     "server": "pnpm --filter @brick/server start",
-    "prettier": "prettier packages/**/*.{mts,ts,tsx} --write"
+    "prettier": "prettier packages/**/*.{mts,ts,tsx} --write",
+    "lint": "eslint packages/*/src --ext ts,tsx"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.14.0",
+    "@typescript-eslint/parser": "^8.14.0",
+    "eslint": "^8",
     "prettier": "^3.3.3"
   }
 }

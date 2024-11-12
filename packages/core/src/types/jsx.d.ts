@@ -10,6 +10,7 @@ declare global {
       label: LabelHTMLAttributes;
       img: ImgHTMLAttributes;
     }
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface Element {}
   }
 }

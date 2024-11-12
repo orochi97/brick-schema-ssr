@@ -19,7 +19,9 @@ const baseProps = {
   }`,
 };
 
-const baseStyle = {};
+const baseStyle = {
+  image: {},
+};
 
 export const initImageSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
   if (compProps.component === 'Image') {
@@ -35,6 +37,8 @@ export const initImageSchemas = <T extends object = object>(compProps: Component
 };
 
 export const Image = ({ props, styles = {} }: ImageProps) => {
+  const imageStyles = Object.assign({}, baseStyle.image, styles);
+
   const onClick = () => {
     if (isFunction(props?.onClick)) {
       props?.onClick();
@@ -46,7 +50,7 @@ export const Image = ({ props, styles = {} }: ImageProps) => {
       src={props?.src}
       width={props?.width}
       height={props?.height}
-      style={libraries.useStyles(styles)}
+      style={libraries.useStyles(imageStyles)}
       onClick={onClick}
     />
   );

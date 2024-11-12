@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // import * as CSS from 'csstype';
 
 // type Properties = import('csstype').Properties;

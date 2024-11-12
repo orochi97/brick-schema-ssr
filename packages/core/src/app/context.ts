@@ -1,13 +1,14 @@
 import { libraries } from '../library';
+import { type SetValueFun, type Context } from '../types';
 
-let schemasContext: {
-  Provider: () => JSX.Element;
-};
+type Value = { changeSchemasValue: SetValueFun };
+
+let schemasContext: Context<Value>;
 
 export const getSchemasContext = () => {
   if (schemasContext) {
     return schemasContext;
   }
-  schemasContext = libraries.createContext();
+  schemasContext = libraries.createContext<Value>({ changeSchemasValue: () => {} });
   return schemasContext;
 };

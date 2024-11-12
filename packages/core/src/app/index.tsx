@@ -14,7 +14,7 @@ const ComponentMap = {
 };
 
 const Component = ({ component, id, ...rest }: ComponentItem & { key: BaseValue }) => {
-  const Comp = ComponentMap[component] as any;
+  const Comp = ComponentMap[component] as () => JSX.Element;
   if (Comp) {
     return <Comp {...rest} cid={id} />;
   }

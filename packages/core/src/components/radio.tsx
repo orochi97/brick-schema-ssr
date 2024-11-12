@@ -31,7 +31,7 @@ const baseStyle = {
   },
 };
 
-export const initRadioSchemas = (compProps: ComponentItem, lib: any) => {
+export const initRadioSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
   if (compProps.component === 'Radio') {
     const props = compProps.props || structuredClone(baseProps);
     const funBody = isString(props?.onChange) ? props.onChange : baseProps.onChange;

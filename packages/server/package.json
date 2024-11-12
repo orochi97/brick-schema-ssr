@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@brick/core": "workspace:*",
     "@brick/client": "workspace:*",
     "@brick/react": "workspace:*",
     "@brick/solid": "workspace:*",

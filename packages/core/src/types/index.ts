@@ -6,11 +6,26 @@ import {
   type ImageProps,
 } from '../components';
 
+export type FunType = (...p: unknown[]) => unknown;
+
 export type Styles = StyleValue;
 
 export type ValueOf<T extends object> = T[keyof T];
 
 export type BaseValue = number | string;
+
+export type Context<T> = {
+  id: symbol;
+  Provider: () => JSX.Element;
+  defaultValue: T;
+};
+
+export interface Libraries {
+  useState: <T extends object>(s: T) => [T, (f: (s: T) => T) => void];
+  useContext: <T>(c: Context<T>) => T;
+  createContext: <T>(defaultValue: T) => Context<T>;
+  useStyles: (s: Styles) => Styles;
+}
 
 export interface ComponentProps {
   Button: ButtonProps;
@@ -44,7 +59,7 @@ export interface Schemas {
 
 export type SetPropsFun = (cid: number, props: UnionProps) => void;
 
-export type SetValueFun = (cid: number, value: BaseValue) => void;
+export type SetValueFun = (cid: number, value?: BaseValue | BaseValue[]) => void;
 
 export type InjectDependentFun = (setProps: SetPropsFun, setValue: SetValueFun) => void;
 

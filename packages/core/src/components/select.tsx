@@ -45,8 +45,9 @@ export const Select = ({ cid, props, styles = {}, value }: SelectProps) => {
   const SchemasContext = getSchemasContext();
   const { changeSchemasValue } = libraries.useContext(SchemasContext);
 
-  const onChange = (e: any) => {
-    const val = e.target.value;
+  const onChange = (e: Event) => {
+    const target = e.target as HTMLSelectElement;
+    const val = target.value;
     const realValue = props?.options?.find((item) => String(item.value) === val)?.value;
 
     if (isFunction(props?.onChange)) {
