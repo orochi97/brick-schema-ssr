@@ -1,4 +1,4 @@
-import { reactive, provide, inject, defineComponent, computed, type PropType } from 'vue';
+import { computed, defineComponent, inject, type PropType, provide, reactive } from 'vue';
 
 import { type Context } from '@brick/core';
 

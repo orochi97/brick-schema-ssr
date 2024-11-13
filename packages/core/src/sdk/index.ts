@@ -1,6 +1,6 @@
 // import { http } from './api';
 import { initSchemasMap } from '../components';
-import { type Schemas, type AppProps, type InjectDependentFun, SetPropsFun, SetValueFun } from '../types';
+import { type AppProps, type InjectDependentFun, type Schemas, SetPropsFun, SetValueFun } from '../types';
 
 interface ConstructorParams {
   schemas: Schemas;

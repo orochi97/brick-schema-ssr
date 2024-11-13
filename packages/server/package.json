@@ -2,6 +2,7 @@
   "name": "@brick/server",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "scripts": {
     "dev": "NODE_ENV=development ts-node src/index.ts",
     "compile:react": "vite build --ssr render/react/index.ts --config render/react/vite.config.mts",

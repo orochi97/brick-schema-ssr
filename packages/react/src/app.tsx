@@ -1,5 +1,6 @@
-import { useState, createContext, useContext } from 'react';
-import { RenderApp, injectLibraries, type AppProps, type Libraries } from '@brick/core';
+import { createContext, useContext, useState } from 'react';
+
+import { type AppProps, injectLibraries, type Libraries, RenderApp } from '@brick/core';
 
 injectLibraries({
   useState,

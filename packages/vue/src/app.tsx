@@ -1,7 +1,8 @@
 import { defineComponent } from 'vue';
-import { RenderApp, injectLibraries, type AppProps, type Libraries } from '@brick/core';
 
-import { useState, useContext, createContext } from './hooks';
+import { type AppProps, injectLibraries, type Libraries, RenderApp } from '@brick/core';
+
+import { createContext, useContext, useState } from './hooks';
 
 injectLibraries({
   useState,

@@ -1,6 +1,6 @@
-import { isString, isFunction } from '../utils';
+import type { ComponentItem, Styles } from '../types';
 import { libraries } from '../library';
-import type { Styles, ComponentItem } from '../types';
+import { isFunction, isString } from '../utils';
 
 type ButtonKind = 'primary' | 'success' | 'danger' | 'default';
 

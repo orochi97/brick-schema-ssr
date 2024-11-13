@@ -1,4 +1,4 @@
-import { type Styles, type Libraries, type Context } from '../types';
+import { type Context, type Libraries, type Styles } from '../types';
 
 export const libraries: Libraries = {
   useState: <T,>(s: T) => [s, (f: (d: T) => T) => f(s)],

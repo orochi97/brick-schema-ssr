@@ -1,8 +1,9 @@
-import fs from 'fs/promises';
+import fs from 'node:fs';
 import path from 'node:path';
+
 import Koa from 'koa';
 
-import { isDev, clientDir, getSchemas } from './common';
+import { clientDir, getSchemas, isDev } from './common';
 
 const app = new Koa();
 
@@ -27,7 +28,7 @@ app.use(async (ctx) => {
   }
 
   const htmlPath = path.resolve(clientDir, 'react/index.html');
-  const htmlStr = await fs.readFile(htmlPath, 'utf-8');
+  const htmlStr = fs.readFileSync(htmlPath, 'utf-8');
 
   const { domText } = await renderToString(schemas);
 

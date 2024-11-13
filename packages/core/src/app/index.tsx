@@ -1,7 +1,5 @@
-import { Button, Select, Checkbox, Radio, Image } from '../components';
-
-import type { Schemas, ComponentItem, BaseValue, AppProps, SetPropsFun, SetValueFun } from '../types';
-
+import type { AppProps, BaseValue, ComponentItem, Schemas, SetPropsFun, SetValueFun } from '../types';
+import { Button, Checkbox, Image, Radio, Select } from '../components';
 import { libraries } from '../library';
 import { getSchemasContext } from './context';
 

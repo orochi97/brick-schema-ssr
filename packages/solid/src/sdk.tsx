@@ -1,4 +1,5 @@
-import { renderToString, hydrate, render, generateHydrationScript } from 'solid-js/web';
+import { generateHydrationScript, hydrate, render, renderToString } from 'solid-js/web';
+
 import { BaseSdk } from '@brick/core';
 
 import { App } from './app';

@@ -1,7 +1,7 @@
-import { isString, isFunction } from '../utils';
+import type { BaseValue, ComponentItem, Styles } from '../types';
 import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
-import type { BaseValue, Styles, ComponentItem } from '../types';
+import { isFunction, isString } from '../utils';
 
 export interface CheckboxProps {
   cid: number;

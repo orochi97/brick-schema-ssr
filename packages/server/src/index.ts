@@ -1,12 +1,12 @@
 import Koa from 'koa';
+import koaMount from 'koa-mount';
 import koaRouter from 'koa-router';
 import koaStatic from 'koa-static';
-import koaMount from 'koa-mount';
 
 import { clientDir, getSchemas } from './app/common';
 import reactApp from './app/react';
-import vueApp from './app/vue';
 import solidApp from './app/solid';
+import vueApp from './app/vue';
 
 const PORT = 3000;
 

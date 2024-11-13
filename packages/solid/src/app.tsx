@@ -1,5 +1,6 @@
-import { useContext, createContext } from 'solid-js';
-import { RenderApp, injectLibraries, type AppProps, type Libraries } from '@brick/core';
+import { createContext, useContext } from 'solid-js';
+
+import { type AppProps, injectLibraries, type Libraries, RenderApp } from '@brick/core';
 
 import { useState, useStyles } from './hooks';
 

@@ -1,8 +1,8 @@
 import { initButtonSchemas } from './button';
-import { initRadioSchemas } from './radio';
 import { initCheckboxSchemas } from './checkbox';
-import { initSelectSchemas } from './select';
 import { initImageSchemas } from './image';
+import { initRadioSchemas } from './radio';
+import { initSelectSchemas } from './select';
 
 export * from './button';
 export * from './select';
