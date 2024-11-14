@@ -9,6 +9,8 @@ export class RenderSdk extends BaseSdk {
   createRoot = async ($dom: HTMLElement) => {
     await this.initSchemas();
 
+    this.insertCss();
+
     createRoot($dom).render(<App {...this.appProps} />);
   };
   hydrateRoot = async ($dom: HTMLElement) => {
@@ -19,8 +21,9 @@ export class RenderSdk extends BaseSdk {
   renderToString = async () => {
     await this.initSchemas();
 
-    const domText = renderToString(<App {...this.appProps} />);
+    const styleText = this.genStyle();
+    const appText = renderToString(<App {...this.appProps} />);
 
-    return { domText, headerText: '' };
+    return { headText: '', styleText, appText };
   };
 }

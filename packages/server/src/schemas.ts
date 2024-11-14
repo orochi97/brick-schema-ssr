@@ -1,6 +1,6 @@
-// import { type Schemas } from '@brick/core';
+import { type Schemas } from '@brick/core';
 
-export const schemas = {
+export const schemas: Schemas = {
   app: {
     init: `
     return async function() {
@@ -8,13 +8,21 @@ export const schemas = {
     }
     `,
   },
+  css: `
+    .warn {
+      color: orange;
+    }
+    .error {
+      color: red;
+    }
+  `,
   components: [
     {
       id: 1,
       component: 'Button',
       props: {
         type: 'primary',
-        children: '按钮',
+        label: '按钮',
         onClick: `
           return async function() {
             lib.setProps(4, {
@@ -26,14 +34,17 @@ export const schemas = {
               ],
             });
             lib.setValue(4, 'guangzhou');
+            lib.removeClass(3, 'warn');
+            lib.addClass(3, 'error');
           }
         `,
       },
+      styles: {},
+      classes: [],
     },
     {
       id: 2,
       component: 'Select',
-      styles: { width: 120 },
       props: {
         options: [
           { value: 'jack', label: 'Jack' },
@@ -42,6 +53,8 @@ export const schemas = {
           { value: 'disabled', label: 'Disabled', disabled: true },
         ],
       },
+      styles: { width: 120 },
+      classes: [],
     },
     {
       id: 3,
@@ -54,6 +67,8 @@ export const schemas = {
           { value: 'disabled', label: 'Disabled', disabled: true },
         ],
       },
+      styles: {},
+      classes: ['warn'],
     },
     {
       id: 4,
@@ -66,6 +81,8 @@ export const schemas = {
           { value: 'disabled', label: 'Disabled', disabled: true },
         ],
       },
+      styles: {},
+      classes: [],
     },
     {
       id: 5,
@@ -80,6 +97,7 @@ export const schemas = {
         height: 100,
         objectFit: 'contain',
       },
+      classes: [],
     },
   ],
 };

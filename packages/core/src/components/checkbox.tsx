@@ -1,17 +1,7 @@
-import type { BaseValue, ComponentItem, Styles } from '../types';
+import type { BaseValue, CheckboxProps, ComponentItem } from '../types';
 import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
-
-export interface CheckboxProps {
-  cid: number;
-  props: {
-    options: { value: BaseValue; label: string; disabled?: boolean }[];
-    onChange?: ((value: BaseValue[]) => void) | string;
-  };
-  styles: Styles;
-  value?: BaseValue[];
-}
 
 const baseValue: BaseValue[] = [];
 
@@ -28,13 +18,14 @@ const baseStyle = {
   },
   disabled: {
     cursor: 'not-allowed',
+    color: 'gray',
   },
 };
 
 export const initCheckboxSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
   if (compProps.component === 'Checkbox') {
-    const props = compProps.props || structuredClone(baseProps);
-    const funBody = isString(props?.onChange) ? props.onChange : baseProps.onChange;
+    const props = compProps.props;
+    const funBody = isString(props.onChange) ? props.onChange : baseProps.onChange;
     const onChange = (value: BaseValue[]) => {
       new Function('lib', funBody)(lib)(value);
     };
@@ -44,7 +35,7 @@ export const initCheckboxSchemas = <T extends object = object>(compProps: Compon
   return compProps;
 };
 
-export const Checkbox = ({ cid, props, styles = {}, value = [] }: CheckboxProps) => {
+export const Checkbox = ({ id, props, styles = {}, value = [], classes }: CheckboxProps) => {
   const style = Object.assign({}, styles);
 
   const SchemasContext = getSchemasContext();
@@ -60,11 +51,11 @@ export const Checkbox = ({ cid, props, styles = {}, value = [] }: CheckboxProps)
     if (isFunction(props?.onChange)) {
       props?.onChange(nowVal);
     }
-    changeSchemasValue(cid, nowVal);
+    changeSchemasValue(id, nowVal);
   };
 
   return (
-    <span style={libraries.useStyles(style)}>
+    <span style={libraries.useStyles(style)} className={libraries.useClass(classes)}>
       {props?.options?.map(({ value: itemValue, label, disabled }) => {
         const optionStyle = Object.assign({}, baseStyle.label, disabled ? baseStyle.disabled : {});
         return (

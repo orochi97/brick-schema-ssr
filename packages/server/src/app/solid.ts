@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import Koa from 'koa';
 
-import { clientDir, getSchemas, isDev } from './common';
+import { clientDir, getSchemas, isDev, renderHtmlString } from './common';
 
 const app = new Koa();
 
@@ -27,13 +27,15 @@ app.use(async (ctx) => {
     renderToString = (await import('@/lib/solid')).renderToString;
   }
 
-  const htmlPath = path.resolve(clientDir, 'solid/index.html');
-  const htmlStr = fs.readFileSync(htmlPath, 'utf-8');
+  // const htmlPath = path.resolve(clientDir, 'solid/index.html');
+  // const htmlStr = fs.readFileSync(htmlPath, 'utf-8');
 
-  const { domText, headerText } = await renderToString(schemas);
+  // const { domText, headerText } = await renderToString(schemas);
 
+  // ctx.type = 'html';
+  // ctx.body = htmlStr.replace('<!-- APP -->', domText).replace('<!-- HEAD -->', headerText);
   ctx.type = 'html';
-  ctx.body = htmlStr.replace('<!-- APP -->', domText).replace('<!-- HEAD -->', headerText);
+  ctx.body = await renderHtmlString(schemas, 'solid', renderToString);
 });
 
 export default app;

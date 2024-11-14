@@ -1,9 +1,6 @@
-import fs from 'node:fs';
-import path from 'node:path';
-
 import Koa from 'koa';
 
-import { clientDir, getSchemas, isDev } from './common';
+import { getSchemas, isDev, renderHtmlString } from './common';
 
 const app = new Koa();
 
@@ -27,13 +24,16 @@ app.use(async (ctx) => {
     renderToString = (await import('@/lib/react')).renderToString;
   }
 
-  const htmlPath = path.resolve(clientDir, 'react/index.html');
-  const htmlStr = fs.readFileSync(htmlPath, 'utf-8');
+  // const htmlPath = path.resolve(clientDir, 'react/index.html');
+  // const htmlStr = fs.readFileSync(htmlPath, 'utf-8');
 
-  const { domText } = await renderToString(schemas);
+  // const { domText } = await renderToString(schemas);
+
+  // ctx.type = 'html';
+  // ctx.body = htmlStr.replace('<!-- APP -->', domText);
 
   ctx.type = 'html';
-  ctx.body = htmlStr.replace('<!-- APP -->', domText);
+  ctx.body = await renderHtmlString(schemas, 'react', renderToString);
 });
 
 export default app;

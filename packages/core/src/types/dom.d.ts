@@ -326,6 +326,7 @@ interface AriaAttributes {
 interface HTMLAttributes extends AriaAttributes, EventHandlers<Events> {
   innerHTML?: string;
   class?: any;
+  className?: any;
   style?: StyleValue;
   accesskey?: string;
   contenteditable?: Booleanish | 'inherit' | 'plaintext-only';

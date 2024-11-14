@@ -1,4 +1,4 @@
-import { type Context, type Libraries, type Styles } from '../types';
+import { type Context, type Libraries } from '../types';
 
 export const libraries: Libraries = {
   useState: <T,>(s: T) => [s, (f: (d: T) => T) => f(s)],
@@ -10,7 +10,13 @@ export const libraries: Libraries = {
       defaultValue: s,
     };
   },
-  useStyles: (s: Styles) => s,
+  useStyles: (s) => s,
+  useClass: (cls) => {
+    if (cls) {
+      return cls.join(' ');
+    }
+    return '';
+  },
 };
 
 export const injectLibraries = (lib: Partial<Libraries>) => {

@@ -1,17 +1,7 @@
-import type { BaseValue, ComponentItem, Styles } from '../types';
+import type { BaseValue, ComponentItem, SelectProps } from '../types';
 import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
-
-export interface SelectProps {
-  cid: number;
-  props: {
-    options: { value: BaseValue; label: string; disabled?: boolean }[];
-    onChange?: ((value: BaseValue | undefined) => void) | string;
-  };
-  styles: Styles;
-  value?: BaseValue;
-}
 
 const baseValue = undefined;
 
@@ -25,13 +15,14 @@ const baseProps = {
 const baseStyle = {
   disabled: {
     cursor: 'not-allowed',
+    color: 'gray',
   },
 };
 
 export const initSelectSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
   if (compProps.component === 'Select') {
-    const props = compProps.props || (structuredClone(baseProps) as typeof baseProps);
-    const funBody = isString(props?.onChange) ? props.onChange : baseProps.onChange;
+    const props = compProps.props;
+    const funBody = isString(props.onChange) ? props.onChange : baseProps.onChange;
     const onChange = (value: BaseValue | undefined) => {
       new Function('lib', funBody)(lib)(value);
     };
@@ -41,7 +32,7 @@ export const initSelectSchemas = <T extends object = object>(compProps: Componen
   return compProps;
 };
 
-export const Select = ({ cid, props, styles = {}, value }: SelectProps) => {
+export const Select = ({ id, props, styles = {}, classes, value }: SelectProps) => {
   const SchemasContext = getSchemasContext();
   const { changeSchemasValue } = libraries.useContext(SchemasContext);
 
@@ -53,10 +44,15 @@ export const Select = ({ cid, props, styles = {}, value }: SelectProps) => {
     if (isFunction(props?.onChange)) {
       props?.onChange?.(realValue);
     }
-    changeSchemasValue(cid, realValue);
+    changeSchemasValue(id, realValue);
   };
   return (
-    <select style={libraries.useStyles(styles)} value={value} onChange={onChange}>
+    <select
+      style={libraries.useStyles(styles)}
+      className={libraries.useClass(classes)}
+      value={value}
+      onChange={onChange}
+    >
       {props?.options?.map(({ value: itemValue, label, disabled }) => {
         const optionStyle = Object.assign({}, disabled ? baseStyle.disabled : {});
         return (

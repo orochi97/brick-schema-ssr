@@ -1,17 +1,6 @@
-import type { ComponentItem, Styles } from '../types';
+import type { ComponentItem, ImageProps } from '../types';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
-
-export interface ImageProps {
-  id: number;
-  props: {
-    src: string;
-    width?: number;
-    height?: number;
-    onClick?: (() => void) | string;
-  };
-  styles: Styles;
-}
 
 const baseProps = {
   onClick: `return async () => {
@@ -25,8 +14,8 @@ const baseStyle = {
 
 export const initImageSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
   if (compProps.component === 'Image') {
-    const props = compProps.props || (structuredClone(baseProps) as typeof baseProps);
-    const funBody = isString(props?.onClick) ? props?.onClick : baseProps.onClick;
+    const props = compProps.props;
+    const funBody = isString(props.onClick) ? props?.onClick : baseProps.onClick;
     const onClick = () => {
       new Function('lib', funBody)(lib)();
     };
@@ -36,7 +25,7 @@ export const initImageSchemas = <T extends object = object>(compProps: Component
   return compProps;
 };
 
-export const Image = ({ props, styles = {} }: ImageProps) => {
+export const Image = ({ props, styles = {}, classes }: ImageProps) => {
   const imageStyles = Object.assign({}, baseStyle.image, styles);
 
   const onClick = () => {
@@ -51,6 +40,7 @@ export const Image = ({ props, styles = {} }: ImageProps) => {
       width={props?.width}
       height={props?.height}
       style={libraries.useStyles(imageStyles)}
+      className={libraries.useClass(classes)}
       onClick={onClick}
     />
   );

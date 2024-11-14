@@ -1,17 +1,7 @@
-import type { BaseValue, ComponentItem, Styles } from '../types';
+import type { BaseValue, ComponentItem, RadioProps } from '../types';
 import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
-
-export interface RadioProps {
-  cid: number;
-  props: {
-    options: { value: BaseValue; label: string; disabled?: boolean }[];
-    onChange?: ((value: BaseValue) => void) | string;
-  };
-  styles: Styles;
-  value?: BaseValue;
-}
 
 const baseValue = undefined;
 
@@ -28,13 +18,14 @@ const baseStyle = {
   },
   disabled: {
     cursor: 'not-allowed',
+    color: 'gray',
   },
 };
 
 export const initRadioSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
   if (compProps.component === 'Radio') {
-    const props = compProps.props || structuredClone(baseProps);
-    const funBody = isString(props?.onChange) ? props.onChange : baseProps.onChange;
+    const props = compProps.props;
+    const funBody = isString(props.onChange) ? props.onChange : baseProps.onChange;
     const onChange = (value: BaseValue) => {
       new Function('lib', funBody)(lib)(value);
     };
@@ -44,7 +35,7 @@ export const initRadioSchemas = <T extends object = object>(compProps: Component
   return compProps;
 };
 
-export const Radio = ({ cid, props, styles = {}, value }: RadioProps) => {
+export const Radio = ({ id, props, styles = {}, classes, value }: RadioProps) => {
   const style = Object.assign({}, styles);
 
   const SchemasContext = getSchemasContext();
@@ -54,11 +45,11 @@ export const Radio = ({ cid, props, styles = {}, value }: RadioProps) => {
     if (isFunction(props?.onChange)) {
       props?.onChange?.(newVal);
     }
-    changeSchemasValue(cid, newVal);
+    changeSchemasValue(id, newVal);
   };
 
   return (
-    <span style={libraries.useStyles(style)}>
+    <span style={libraries.useStyles(style)} className={libraries.useClass(classes)}>
       {props?.options?.map(({ value: itemValue, label, disabled }) => {
         const optionStyle = Object.assign({}, baseStyle.label, disabled ? baseStyle.disabled : {});
         return (

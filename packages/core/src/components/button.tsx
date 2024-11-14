@@ -1,18 +1,6 @@
-import type { ComponentItem, Styles } from '../types';
+import type { ButtonKind, ButtonProps, ComponentItem, Styles } from '../types';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
-
-type ButtonKind = 'primary' | 'success' | 'danger' | 'default';
-
-export interface ButtonProps {
-  id: number;
-  props: {
-    label?: string;
-    type?: ButtonKind;
-    onClick?: (() => void) | string;
-  };
-  styles: Styles;
-}
 
 const baseProps = {
   label: 'Button',
@@ -51,8 +39,8 @@ const baseStyle: Record<ButtonKind | 'button', Styles> = {
 
 export const initButtonSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
   if (compProps.component === 'Button') {
-    const props = compProps.props || (structuredClone(baseProps) as typeof baseProps);
-    const funBody = isString(props?.onClick) ? props?.onClick : baseProps.onClick;
+    const props = compProps.props;
+    const funBody = isString(props.onClick) ? props?.onClick : baseProps.onClick;
     const onClick = () => {
       new Function('lib', funBody)(lib)();
     };
@@ -62,7 +50,7 @@ export const initButtonSchemas = <T extends object = object>(compProps: Componen
   return compProps;
 };
 
-export const Button = ({ props, styles = {} }: ButtonProps) => {
+export const Button = ({ props, styles = {}, classes }: ButtonProps) => {
   const buttonStyle = Object.assign({}, baseStyle.button, baseStyle[props?.type || 'default'], styles);
 
   const onClick = () => {
@@ -72,7 +60,7 @@ export const Button = ({ props, styles = {} }: ButtonProps) => {
   };
 
   return (
-    <button style={libraries.useStyles(buttonStyle)} onClick={onClick}>
+    <button style={libraries.useStyles(buttonStyle)} className={libraries.useClass(classes)} onClick={onClick}>
       {props?.label || 'Button'}
     </button>
   );
