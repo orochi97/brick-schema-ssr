@@ -16,21 +16,10 @@ app.use(async (ctx) => {
       plugins: [react()],
       appType: 'custom',
     });
-    const { RenderSdk } = await vite.ssrLoadModule('@brick/react');
-    const sdk = new RenderSdk({ schemas });
-
-    renderToString = sdk.renderToString;
+    renderToString = (await vite.ssrLoadModule('render/react')).renderToString;
   } else {
     renderToString = (await import('@/lib/react')).renderToString;
   }
-
-  // const htmlPath = path.resolve(clientDir, 'react/index.html');
-  // const htmlStr = fs.readFileSync(htmlPath, 'utf-8');
-
-  // const { domText } = await renderToString(schemas);
-
-  // ctx.type = 'html';
-  // ctx.body = htmlStr.replace('<!-- APP -->', domText);
 
   ctx.type = 'html';
   ctx.body = await renderHtmlString(schemas, 'react', renderToString);

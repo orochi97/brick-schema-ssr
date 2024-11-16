@@ -1,7 +1,8 @@
+import { type Schemas } from '@brick/core';
 import { RenderSdk } from '@brick/react';
 
-export const renderToString = (schemas) => {
-  const sdk = new RenderSdk({ schemas });
+import { render } from '../index';
 
-  return sdk.renderToString();
+export const renderToString = (schemas: Schemas) => {
+  return render(RenderSdk, schemas);
 };

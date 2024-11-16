@@ -24,6 +24,7 @@
     "@brick/react": "workspace:*",
     "@brick/solid": "workspace:*",
     "@brick/vue": "workspace:*",
+    "@koa/cors": "^5.0.0",
     "@vitejs/plugin-react": "^4.3.3",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
@@ -32,6 +33,7 @@
     "koa-mount": "^4.0.0",
     "koa-router": "^13.0.1",
     "koa-static": "^5.0.0",
+    "node-fetch": "^2.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "solid-js": "^1.9.3",
@@ -44,6 +46,7 @@
     "@types/koa-mount": "^4.0.5",
     "@types/koa-router": "^7.4.8",
     "@types/koa-static": "^4.0.4",
+    "@types/koa__cors": "^5.0.0",
     "resolve-tspaths": "^0.8.22",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"

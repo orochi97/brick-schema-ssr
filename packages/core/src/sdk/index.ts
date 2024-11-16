@@ -1,4 +1,3 @@
-// import { http } from './api';
 import { minify } from 'csso';
 import { insertCss } from 'insert-css';
 
@@ -7,12 +6,15 @@ import { initSchemasMap } from '../components';
 
 interface ConstructorParams {
   schemas: Schemas;
+  dependency: Record<string, unknown>;
 }
 
 export abstract class BaseSdk {
   protected schemas: Schemas;
-  constructor({ schemas }: ConstructorParams) {
+  private dependency: ConstructorParams['dependency'];
+  constructor({ schemas, dependency }: ConstructorParams) {
     this.schemas = schemas;
+    this.dependency = dependency;
   }
   async initSchemas() {
     await new Function('lib', this.schemas.app.init)(this.lib)();
@@ -72,7 +74,7 @@ export abstract class BaseSdk {
     setValue: SetValueFun;
     addClass: SetClassFun;
     removeClass: SetClassFun;
-  } {
+  } & ConstructorParams['dependency'] {
     return {
       setProps: (id, props) => {
         this.setProps(id, props);
@@ -86,7 +88,7 @@ export abstract class BaseSdk {
       removeClass: (id, value) => {
         this.removeClass(id, value);
       },
-      // http,
+      ...this.dependency,
     };
   }
   abstract createRoot: ($dom: HTMLElement) => void;
