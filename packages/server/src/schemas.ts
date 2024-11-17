@@ -3,10 +3,10 @@ import { type Schemas } from '@brick/core';
 export const schemas: Schemas = {
   app: {
     init: `
-    return async function() {
-      const image = await lib.http.get('http://localhost:3000/api/image')
-      lib.setProps(6, { src: image.src });
-    }
+      return async function() {
+        const image = await lib.http.get('http://localhost:3000/api/image')
+        lib.setProps(6, { src: image.src });
+      }
     `,
   },
   css: `
