@@ -1,4 +1,12 @@
-import type { BaseValue, Classes, ComponentItem, Styles, UnionProps } from './component';
+import type {
+  BaseClasses,
+  BaseObject,
+  BaseStyles,
+  BaseValue,
+  ClassNames,
+  ComponentItem,
+  UnionProps,
+} from './component';
 
 export type * from './component';
 
@@ -16,8 +24,8 @@ export interface Libraries {
   useState: <T extends object>(s: T) => [T, (f: (s: T) => T) => void];
   useContext: <T>(c: Context<T>) => T;
   createContext: <T>(defaultValue: T) => Context<T>;
-  useStyles: (s: Styles) => Styles;
-  useClass: (c: Classes) => string;
+  useStyles: (s: BaseStyles) => BaseStyles;
+  useClass: (c: BaseClasses, data?: BaseObject) => string;
 }
 
 export interface Schemas {
@@ -32,16 +40,31 @@ export type SetPropsFun = (id: number, props: UnionProps) => void;
 
 export type SetValueFun = (id: number, value?: BaseValue | BaseValue[]) => void;
 
-export type SetClassFun = (id: number, className: Classes[number]) => void;
+export type SetClassFun = (id: number, classNames: ClassNames) => void;
 
-export type InjectDependentFun = (
-  setProps: SetPropsFun,
-  setValue: SetValueFun,
-  addClass: SetClassFun,
-  removeClass: SetClassFun,
-) => void;
+export type InjectDependentFun = (p: {
+  setProps: SetPropsFun;
+  setValue: SetValueFun;
+  addClasses: SetClassFun;
+  removeClasses: SetClassFun;
+}) => void;
 
 export interface AppProps {
   schemas: Schemas;
   injectDependentFun: InjectDependentFun;
 }
+
+export interface SdkConstructorParams {
+  schemas: Schemas;
+  dependency: BaseObject;
+}
+
+type Relation = {
+  parent: {
+    parent: Relation['parent'];
+    data: ComponentItem | null;
+  } | null;
+  self: ComponentItem | null;
+};
+
+export type InjectLib = { sys: Parameters<InjectDependentFun>[number] } & SdkConstructorParams['dependency'] & Relation;

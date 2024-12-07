@@ -1,18 +1,18 @@
-import type { ComponentItem, ImageProps } from '../types';
+import type { ComponentItem, ImageProps, InjectLib } from '../types';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 
 const baseProps = {
-  onClick: `return async () => {
-    console.log('Image onClick')
+  onClick: `return async (context) => {
+    console.info('Image onClick', context);
   }`,
 };
 
 const baseStyle = {
-  image: {},
+  main: {},
 };
 
-export const initImageSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
+export const initImageSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Image') {
     const props = compProps.props;
     const funBody = isString(props.onClick) ? props?.onClick : baseProps.onClick;
@@ -25,8 +25,8 @@ export const initImageSchemas = <T extends object = object>(compProps: Component
   return compProps;
 };
 
-export const Image = ({ props, styles = {}, classes }: ImageProps) => {
-  const imageStyles = Object.assign({}, baseStyle.image, styles);
+export const Image = ({ props, styles = { main: {} }, classes }: ImageProps) => {
+  const mainStyle = Object.assign({}, baseStyle.main, styles.main);
 
   const onClick = () => {
     if (isFunction(props?.onClick)) {
@@ -39,7 +39,7 @@ export const Image = ({ props, styles = {}, classes }: ImageProps) => {
       src={props?.src}
       width={props?.width}
       height={props?.height}
-      style={libraries.useStyles(imageStyles)}
+      style={libraries.useStyles(mainStyle)}
       className={libraries.useClass(classes)}
       onClick={onClick}
     />

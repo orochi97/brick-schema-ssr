@@ -1,6 +1,6 @@
 import { createStore, produce } from 'solid-js/store';
 
-import { type Styles, type ValueOf } from '@brick/core';
+import { type BaseStyles, type ValueOf } from '@brick/core';
 
 export const useState = <T extends object>(initState: T) => {
   const [state, set] = createStore<T>(initState);
@@ -12,8 +12,8 @@ export const useState = <T extends object>(initState: T) => {
   return [state, setState] as [T, (f: (s: T) => T) => void];
 };
 
-export const useStyles = (styles: Styles) => {
-  const newStyles: Record<string, ValueOf<Styles>> = {};
+export const useStyles = (styles: BaseStyles) => {
+  const newStyles: Record<string, ValueOf<BaseStyles>> = {};
 
   for (const key in styles) {
     const newKey = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();

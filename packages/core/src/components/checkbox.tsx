@@ -1,4 +1,4 @@
-import type { BaseValue, CheckboxProps, ComponentItem } from '../types';
+import type { BaseValue, CheckboxProps, ComponentItem, EventContext, InjectLib } from '../types';
 import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
@@ -8,12 +8,12 @@ const baseValue: BaseValue[] = [];
 const baseProps = {
   options: [],
   onChange: `return async (context) => {
-    console.log('Checkbox onchange', context)
+    console.info('Checkbox onchange', context);
   }`,
 };
 
 const baseStyle = {
-  label: {
+  main: {
     cursor: 'pointer',
   },
   disabled: {
@@ -22,12 +22,12 @@ const baseStyle = {
   },
 };
 
-export const initCheckboxSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
+export const initCheckboxSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Checkbox') {
     const props = compProps.props;
     const funBody = isString(props.onChange) ? props.onChange : baseProps.onChange;
-    const onChange = (value: BaseValue[]) => {
-      new Function('lib', funBody)(lib)(value);
+    const onChange = (params: EventContext) => {
+      new Function('lib', funBody)(lib)(params);
     };
     props.onChange = onChange;
     return Object.assign({}, compProps, { props, value: baseValue });
@@ -35,29 +35,32 @@ export const initCheckboxSchemas = <T extends object = object>(compProps: Compon
   return compProps;
 };
 
-export const Checkbox = ({ id, props, styles = {}, value = [], classes }: CheckboxProps) => {
-  const style = Object.assign({}, styles);
+export const Checkbox = ({ id, props, styles = { main: {} }, value = [], classes, meta }: CheckboxProps) => {
+  const mainStyle = Object.assign({}, styles.main);
 
   const SchemasContext = getSchemasContext();
   const { changeSchemasValue } = libraries.useContext(SchemasContext);
 
   const onChange = (val: BaseValue) => {
-    const nowVal = [...value];
+    const newVal = [...value];
     if (value.includes(val)) {
-      nowVal.splice(value.indexOf(val), 1);
+      newVal.splice(value.indexOf(val), 1);
     } else {
-      nowVal.push(val);
+      newVal.push(val);
     }
     if (isFunction(props?.onChange)) {
-      props?.onChange(nowVal);
+      props?.onChange({
+        value: newVal,
+        meta,
+      });
     }
-    changeSchemasValue(id, nowVal);
+    changeSchemasValue(id, newVal);
   };
 
   return (
-    <span style={libraries.useStyles(style)} className={libraries.useClass(classes)}>
+    <span style={libraries.useStyles(mainStyle)} className={libraries.useClass(classes)}>
       {props?.options?.map(({ value: itemValue, label, disabled }) => {
-        const optionStyle = Object.assign({}, baseStyle.label, disabled ? baseStyle.disabled : {});
+        const optionStyle = Object.assign({}, baseStyle.main, disabled ? baseStyle.disabled : {});
         return (
           <label key={itemValue} html-for={itemValue} style={libraries.useStyles(optionStyle)}>
             <input

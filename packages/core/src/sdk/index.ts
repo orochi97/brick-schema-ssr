@@ -1,25 +1,38 @@
 import { minify } from 'csso';
 import { insertCss } from 'insert-css';
 
-import type { AppProps, InjectDependentFun, Schemas, SetClassFun, SetPropsFun, SetValueFun } from '../types';
+import type {
+  AppProps,
+  InjectDependentFun,
+  InjectLib,
+  Schemas,
+  SdkConstructorParams,
+  SetClassFun,
+  SetPropsFun,
+  SetValueFun,
+} from '../types';
 import { initSchemasMap } from '../components';
-
-interface ConstructorParams {
-  schemas: Schemas;
-  dependency: Record<string, unknown>;
-}
 
 export abstract class BaseSdk {
   protected schemas: Schemas;
-  private dependency: ConstructorParams['dependency'];
-  constructor({ schemas, dependency }: ConstructorParams) {
+  private dependency: SdkConstructorParams['dependency'];
+  constructor({ schemas, dependency }: SdkConstructorParams) {
     this.schemas = schemas;
     this.dependency = dependency;
   }
   async initSchemas() {
-    await new Function('lib', this.schemas.app.init)(this.lib)();
+    const inject: InjectLib = {
+      sys: this.util,
+      ...this.dependency,
+      parent: {
+        parent: null,
+        data: null,
+      },
+      self: null,
+    };
+    await new Function('lib', this.schemas.app.init)(inject)();
     this.schemas.components.forEach((item, index) => {
-      this.schemas.components[index] = initSchemasMap[item.component](item, this.lib);
+      this.schemas.components[index] = initSchemasMap[item.component](item, inject);
     });
   }
   setProps: SetPropsFun = (id, props) => {
@@ -34,23 +47,27 @@ export abstract class BaseSdk {
       comp.value = value;
     }
   };
-  addClass: SetClassFun = (id, className) => {
+  addClasses: SetClassFun = (id, classNames) => {
     const comp = this.schemas.components.find((item) => item.id === id);
-    if (comp && !comp.classes.includes(className)) {
-      comp.classes.push(className);
+    if (comp) {
+      classNames.forEach((name) => {
+        comp.classes[name] = true;
+      });
     }
   };
-  removeClass: SetClassFun = (id, className) => {
+  removeClasses: SetClassFun = (id, classNames) => {
     const comp = this.schemas.components.find((item) => item.id === id);
-    if (comp && comp.classes.includes(className)) {
-      comp.classes = comp.classes.filter((cls) => cls !== className);
+    if (comp) {
+      classNames.forEach((name) => {
+        delete comp.classes[name];
+      });
     }
   };
-  injectDependentFun: InjectDependentFun = (setProps, setValue, addClass, removeClass) => {
+  injectDependentFun: InjectDependentFun = ({ setProps, setValue, addClasses, removeClasses }) => {
     this.setProps = setProps;
     this.setValue = setValue;
-    this.addClass = addClass;
-    this.removeClass = removeClass;
+    this.addClasses = addClasses;
+    this.removeClasses = removeClasses;
   };
   insertCss() {
     if (this.schemas.css) {
@@ -69,12 +86,7 @@ export abstract class BaseSdk {
       injectDependentFun: this.injectDependentFun,
     };
   }
-  get lib(): {
-    setProps: SetPropsFun;
-    setValue: SetValueFun;
-    addClass: SetClassFun;
-    removeClass: SetClassFun;
-  } & ConstructorParams['dependency'] {
+  get util(): Parameters<InjectDependentFun>[number] {
     return {
       setProps: (id, props) => {
         this.setProps(id, props);
@@ -82,13 +94,12 @@ export abstract class BaseSdk {
       setValue: (id, value) => {
         this.setValue(id, value);
       },
-      addClass: (id, value) => {
-        this.addClass(id, value);
+      addClasses: (id, value) => {
+        this.addClasses(id, value);
       },
-      removeClass: (id, value) => {
-        this.removeClass(id, value);
+      removeClasses: (id, value) => {
+        this.removeClasses(id, value);
       },
-      ...this.dependency,
     };
   }
   abstract createRoot: ($dom: HTMLElement) => void;

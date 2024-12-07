@@ -1,4 +1,7 @@
+import { clsx } from 'clsx';
+
 import { type Context, type Libraries } from '../types';
+import { isString } from '../utils';
 
 export const libraries: Libraries = {
   useState: <T,>(s: T) => [s, (f: (d: T) => T) => f(s)],
@@ -11,9 +14,15 @@ export const libraries: Libraries = {
     };
   },
   useStyles: (s) => s,
-  useClass: (cls) => {
+  useClass: (cls, data = {}) => {
     if (cls) {
-      return cls.join(' ');
+      const newCls = { ...cls };
+      for (const key in cls) {
+        if (key in data && isString(cls[key])) {
+          newCls[key] = !!data[cls[key]];
+        }
+      }
+      return clsx(newCls);
     }
     return '';
   },

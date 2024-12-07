@@ -1,4 +1,4 @@
-import type { BaseValue, ComponentItem, SelectProps } from '../types';
+import type { ComponentItem, EventContext, InjectLib, SelectProps } from '../types';
 import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
@@ -8,7 +8,7 @@ const baseValue = undefined;
 const baseProps = {
   options: [],
   onChange: `return async (context) => {
-    console.log('Select onchange', context)
+    console.info('Select onchange', context)
   }`,
 };
 
@@ -19,12 +19,12 @@ const baseStyle = {
   },
 };
 
-export const initSelectSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
+export const initSelectSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Select') {
     const props = compProps.props;
     const funBody = isString(props.onChange) ? props.onChange : baseProps.onChange;
-    const onChange = (value: BaseValue | undefined) => {
-      new Function('lib', funBody)(lib)(value);
+    const onChange = (params: EventContext) => {
+      new Function('lib', funBody)(lib)(params);
     };
     props.onChange = onChange;
     return Object.assign({}, compProps, { props, value: baseValue });
@@ -32,7 +32,9 @@ export const initSelectSchemas = <T extends object = object>(compProps: Componen
   return compProps;
 };
 
-export const Select = ({ id, props, styles = {}, classes, value }: SelectProps) => {
+export const Select = ({ id, props, styles = { main: {} }, classes, value }: SelectProps) => {
+  const mainStyle = Object.assign({}, styles.main);
+
   const SchemasContext = getSchemasContext();
   const { changeSchemasValue } = libraries.useContext(SchemasContext);
 
@@ -48,7 +50,7 @@ export const Select = ({ id, props, styles = {}, classes, value }: SelectProps) 
   };
   return (
     <select
-      style={libraries.useStyles(styles)}
+      style={libraries.useStyles(mainStyle)}
       className={libraries.useClass(classes)}
       value={value}
       onChange={onChange}
@@ -59,7 +61,7 @@ export const Select = ({ id, props, styles = {}, classes, value }: SelectProps) 
           <option
             key={itemValue}
             value={String(itemValue)}
-            selected={String(itemValue) === value}
+            // selected={String(itemValue) === value} react 会报错建议用 select value 赋值，但是 solid 仅使用 select value 会不生效
             disabled={disabled}
             style={libraries.useStyles(optionStyle)}
           >

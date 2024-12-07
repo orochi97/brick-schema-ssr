@@ -1,17 +1,17 @@
-import type { ButtonKind, ButtonProps, ComponentItem, Styles } from '../types';
+import type { ButtonProps, ComponentItem, InjectLib } from '../types';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 
 const baseProps = {
   label: 'Button',
   type: 'default',
-  onClick: `return async () => {
-    console.log('button onClick')
+  onClick: `return async (context) => {
+    console.info('button onClick', context);
   }`,
 };
 
-const baseStyle: Record<ButtonKind | 'button', Styles> = {
-  button: {
+const baseStyle = {
+  main: {
     border: '1px solid #ccc',
     borderRadius: '8px',
     padding: '6px 10px',
@@ -35,9 +35,14 @@ const baseStyle: Record<ButtonKind | 'button', Styles> = {
   default: {
     backgroundColor: 'white',
   },
+  disabled: {
+    borderColor: '#ccc',
+    backgroundColor: '#ccc',
+    cursor: 'not-allowed',
+  },
 };
 
-export const initButtonSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
+export const initButtonSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Button') {
     const props = compProps.props;
     const funBody = isString(props.onClick) ? props?.onClick : baseProps.onClick;
@@ -50,17 +55,31 @@ export const initButtonSchemas = <T extends object = object>(compProps: Componen
   return compProps;
 };
 
-export const Button = ({ props, styles = {}, classes }: ButtonProps) => {
-  const buttonStyle = Object.assign({}, baseStyle.button, baseStyle[props?.type || 'default'], styles);
+export const Button = ({ props, styles = { main: {} }, classes, meta }: ButtonProps) => {
+  const mainStyle = Object.assign(
+    {},
+    baseStyle.main,
+    baseStyle[props?.type || 'default'],
+    props.disabled ? baseStyle.disabled : {},
+    styles.main,
+  );
 
   const onClick = () => {
     if (isFunction(props?.onClick)) {
-      props?.onClick();
+      props?.onClick({
+        value: undefined,
+        meta,
+      });
     }
   };
 
   return (
-    <button style={libraries.useStyles(buttonStyle)} className={libraries.useClass(classes)} onClick={onClick}>
+    <button
+      disabled={props.disabled}
+      style={libraries.useStyles(mainStyle)}
+      className={libraries.useClass(classes, meta?.data)}
+      onClick={onClick}
+    >
       {props?.label || 'Button'}
     </button>
   );

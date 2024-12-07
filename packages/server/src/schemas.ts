@@ -5,7 +5,7 @@ export const schemas: Schemas = {
     init: `
       return async function() {
         const image = await lib.http.get('http://localhost:3000/api/image')
-        lib.setProps(6, { src: image.src });
+        lib.sys.setProps(6, { src: image.src });
       }
     `,
   },
@@ -27,15 +27,15 @@ export const schemas: Schemas = {
         onClick: `
           return async function() {
             const options = await lib.http.get('http://localhost:3000/api/options')
-            lib.setProps(4, { options });
-            lib.setValue(4, 'guangzhou');
-            lib.removeClass(3, 'warn');
-            lib.addClass(3, 'error');
+            lib.sys.setProps(4, { options });
+            lib.sys.setValue(4, 'guangzhou');
+            lib.sys.removeClasses(3, ['warn']);
+            lib.sys.addClasses(3, ['error']);
           }
         `,
       },
-      styles: {},
-      classes: [],
+      styles: { main: {} },
+      classes: {},
     },
     {
       id: 2,
@@ -48,8 +48,8 @@ export const schemas: Schemas = {
           { value: 'disabled', label: 'Disabled', disabled: true },
         ],
       },
-      styles: { width: 120 },
-      classes: [],
+      styles: { main: { width: 120 } },
+      classes: {},
     },
     {
       id: 3,
@@ -62,8 +62,8 @@ export const schemas: Schemas = {
           { value: 'disabled', label: 'Disabled', disabled: true },
         ],
       },
-      styles: {},
-      classes: ['warn'],
+      styles: { main: {} },
+      classes: { warn: true },
     },
     {
       id: 4,
@@ -76,8 +76,8 @@ export const schemas: Schemas = {
           { value: 'disabled', label: 'Disabled', disabled: true },
         ],
       },
-      styles: {},
-      classes: [],
+      styles: { main: {} },
+      classes: {},
     },
     {
       id: 5,
@@ -88,11 +88,13 @@ export const schemas: Schemas = {
         height: 100,
       },
       styles: {
-        width: 100,
-        height: 100,
-        objectFit: 'contain',
+        main: {
+          width: 100,
+          height: 100,
+          objectFit: 'contain',
+        },
       },
-      classes: [],
+      classes: {},
     },
     {
       id: 6,
@@ -103,11 +105,13 @@ export const schemas: Schemas = {
         height: 100,
       },
       styles: {
-        width: 100,
-        height: 100,
-        objectFit: 'contain',
+        main: {
+          width: 100,
+          height: 100,
+          objectFit: 'contain',
+        },
       },
-      classes: [],
+      classes: {},
     },
   ],
 };

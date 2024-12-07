@@ -1,4 +1,4 @@
-import type { BaseValue, ComponentItem, RadioProps } from '../types';
+import type { BaseValue, ComponentItem, EventContext, InjectLib, RadioProps } from '../types';
 import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
@@ -8,12 +8,12 @@ const baseValue = undefined;
 const baseProps = {
   options: [],
   onChange: `return async (context) => {
-    console.log('Radio onchange', context)
+    console.info('Radio onchange', context)
   }`,
 };
 
 const baseStyle = {
-  label: {
+  main: {
     cursor: 'pointer',
   },
   disabled: {
@@ -22,12 +22,12 @@ const baseStyle = {
   },
 };
 
-export const initRadioSchemas = <T extends object = object>(compProps: ComponentItem, lib: T) => {
+export const initRadioSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Radio') {
     const props = compProps.props;
     const funBody = isString(props.onChange) ? props.onChange : baseProps.onChange;
-    const onChange = (value: BaseValue) => {
-      new Function('lib', funBody)(lib)(value);
+    const onChange = (params: EventContext) => {
+      new Function('lib', funBody)(lib)(params);
     };
     props.onChange = onChange;
     return Object.assign({}, compProps, { props, value: baseValue });
@@ -35,8 +35,8 @@ export const initRadioSchemas = <T extends object = object>(compProps: Component
   return compProps;
 };
 
-export const Radio = ({ id, props, styles = {}, classes, value }: RadioProps) => {
-  const style = Object.assign({}, styles);
+export const Radio = ({ id, props, styles = { main: {} }, classes, value }: RadioProps) => {
+  const mainStyle = Object.assign({}, styles.main);
 
   const SchemasContext = getSchemasContext();
   const { changeSchemasValue } = libraries.useContext(SchemasContext);
@@ -49,9 +49,9 @@ export const Radio = ({ id, props, styles = {}, classes, value }: RadioProps) =>
   };
 
   return (
-    <span style={libraries.useStyles(style)} className={libraries.useClass(classes)}>
+    <span style={libraries.useStyles(mainStyle)} className={libraries.useClass(classes)}>
       {props?.options?.map(({ value: itemValue, label, disabled }) => {
-        const optionStyle = Object.assign({}, baseStyle.label, disabled ? baseStyle.disabled : {});
+        const optionStyle = Object.assign({}, baseStyle.main, disabled ? baseStyle.disabled : {});
         return (
           <label key={itemValue} html-for={itemValue} style={libraries.useStyles(optionStyle)}>
             <input

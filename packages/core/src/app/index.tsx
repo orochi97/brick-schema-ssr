@@ -44,27 +44,36 @@ export function RenderApp({ schemas, injectDependentFun }: AppProps) {
     });
   };
 
-  const addClass: SetClassFun = (id, className) => {
+  const addClasses: SetClassFun = (id, classNames) => {
     setState((schemas) => {
       const comp = schemas.components.find((item) => item.id === id);
-      if (comp && !comp.classes.includes(className)) {
-        comp.classes.push(className);
+      if (comp) {
+        classNames.forEach((name) => {
+          comp.classes[name] = true;
+        });
       }
       return { ...schemas };
     });
   };
 
-  const removeClass: SetClassFun = (id, className) => {
+  const removeClasses: SetClassFun = (id, classNames) => {
     setState((schemas) => {
       const comp = schemas.components.find((item) => item.id === id);
-      if (comp && comp.classes.includes(className)) {
-        comp.classes = comp.classes.filter((cls) => cls !== className);
+      if (comp) {
+        classNames.forEach((name) => {
+          delete comp.classes[name];
+        });
       }
       return { ...schemas };
     });
   };
 
-  injectDependentFun(changeSchemasProps, changeSchemasValue, addClass, removeClass);
+  injectDependentFun({
+    setProps: changeSchemasProps,
+    setValue: changeSchemasValue,
+    addClasses,
+    removeClasses,
+  });
 
   return (
     <SchemasContext.Provider value={{ changeSchemasValue }}>
