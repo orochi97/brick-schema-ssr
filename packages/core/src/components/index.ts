@@ -1,9 +1,10 @@
-import { initButtonSchemas } from './button';
-import { initCheckboxSchemas } from './checkbox';
-import { initImageSchemas } from './image';
-import { initListSchemas } from './list';
-import { initRadioSchemas } from './radio';
-import { initSelectSchemas } from './select';
+import { Button, initButtonSchemas } from './button';
+import { Checkbox, initCheckboxSchemas } from './checkbox';
+import { Image, initImageSchemas } from './image';
+import { initListSchemas, List } from './list';
+import { initRadioSchemas, Radio } from './radio';
+import { initSelectSchemas, Select } from './select';
+import { initTextSchemas, Text } from './text';
 
 export * from './button';
 export * from './select';
@@ -11,23 +12,35 @@ export * from './checkbox';
 export * from './radio';
 export * from './image';
 export * from './list';
+export * from './text';
 
-export const initSchemasMap = {
-  Button: initButtonSchemas,
-  Select: initSelectSchemas,
-  Checkbox: initCheckboxSchemas,
-  Radio: initRadioSchemas,
-  Image: initImageSchemas,
-  List: initListSchemas,
+export const componentMap = {
+  Button: {
+    init: initButtonSchemas,
+    render: Button,
+  },
+  Select: {
+    init: initSelectSchemas,
+    render: Select,
+  },
+  Checkbox: {
+    init: initCheckboxSchemas,
+    render: Checkbox,
+  },
+  Radio: {
+    init: initRadioSchemas,
+    render: Radio,
+  },
+  Image: {
+    init: initImageSchemas,
+    render: Image,
+  },
+  List: {
+    init: initListSchemas,
+    render: List,
+  },
+  Text: {
+    init: initTextSchemas,
+    render: Text,
+  },
 };
-
-// export const ComponentMap = {
-//   Button: {
-//     init: initButtonSchemas,
-//   },
-//   Select: initSelectSchemas,
-//   Checkbox: initCheckboxSchemas,
-//   Radio: initRadioSchemas,
-//   Image: initImageSchemas,
-//   List: initListSchemas,
-// };

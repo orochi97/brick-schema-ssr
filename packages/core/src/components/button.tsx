@@ -7,7 +7,7 @@ const baseProps = {
   label: 'Button',
   type: 'default',
   onClick: `return async (context) => {
-    console.info('button onClick', context);
+    console.info('Button onClick', context);
   }`,
 };
 
@@ -81,7 +81,7 @@ export const Button = ({ props, styles = { main: {} }, classes = {}, meta }: But
       className={libraries.useClass(classes, meta?.data)}
       onClick={onClick}
     >
-      {props?.label || 'Button'}
+      {props?.label || baseProps.label}
     </button>
   );
 };

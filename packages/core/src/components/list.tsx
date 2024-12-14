@@ -7,6 +7,7 @@ import { initCheckboxSchemas } from './checkbox';
 import { initImageSchemas } from './image';
 import { initRadioSchemas } from './radio';
 import { initSelectSchemas } from './select';
+import { initTextSchemas } from './text';
 
 const baseProps = {
   children: [],
@@ -31,6 +32,7 @@ export const initListSchemas = (compProps: ComponentItem, lib: InjectLib) => {
       Radio: initRadioSchemas,
       Image: initImageSchemas,
       List: initListSchemas,
+      Text: initTextSchemas,
     };
 
     const props: ListProps['props'] = Object.assign({}, baseProps, compProps.props);

@@ -52,10 +52,10 @@ router.get('/list', async (ctx) => {
       src: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
     },
     {
-      src: 'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
+      src: 'https://v2.vuejs.org/images/logo.svg',
     },
     {
-      src: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+      src: 'https://angular.tw/assets/images/logos/angular/angular.svg',
     },
   ];
 });

@@ -12,7 +12,7 @@ import type {
   SetPropsFun,
   SetValueFun,
 } from '../types';
-import { initSchemasMap } from '../components';
+import { componentMap } from '../components';
 
 export abstract class BaseSdk {
   protected schemas: Schemas;
@@ -33,7 +33,7 @@ export abstract class BaseSdk {
     } satisfies InjectLib)();
 
     this.schemas.components.forEach((item, index) => {
-      this.schemas.components[index] = initSchemasMap[item.component](item, {
+      this.schemas.components[index] = componentMap[item.component].init(item, {
         sys: this.util,
         ...this.dependency,
         parent: {

@@ -177,6 +177,16 @@ export const schemas: Schemas = {
         },
         {
           id: 10087,
+          component: 'Text',
+          props: {},
+          extern: {
+            dataMap: {
+              label: 'label',
+            },
+          },
+        },
+        {
+          id: 10088,
           component: 'Button',
           props: {
             type: 'danger',
@@ -199,6 +209,21 @@ export const schemas: Schemas = {
           },
         },
       ],
+    },
+    {
+      id: 8,
+      component: 'Button',
+      props: {
+        type: 'primary',
+        label: 'Confirm',
+        onClick: `
+          return async function(context) {
+            const { sys, http, consts, parent } = lib;
+            const listComp = sys.findComp(7);
+            console.info(listComp.props.list.filter(i => i.disabled).map(i => i.index))
+          }
+        `,
+      },
     },
   ],
 };
