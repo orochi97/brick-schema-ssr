@@ -1,8 +1,9 @@
-import type { ButtonProps, ComponentItem, InjectLib } from '../types';
+import type { BaseStyles, ButtonProps, ComponentItem, EventContext, InjectLib } from '../types';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 
 const baseProps = {
+  disabled: false,
   label: 'Button',
   type: 'default',
   onClick: `return async (context) => {
@@ -44,10 +45,10 @@ const baseStyle = {
 
 export const initButtonSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Button') {
-    const props = compProps.props;
-    const funBody = isString(props.onClick) ? props?.onClick : baseProps.onClick;
-    const onClick = () => {
-      new Function('lib', funBody)(lib)();
+    const props: ButtonProps['props'] = Object.assign({}, baseProps, compProps.props);
+    const funBody = isString(props.onClick) ? props.onClick : baseProps.onClick;
+    const onClick = (params: EventContext) => {
+      new Function('lib', funBody)(lib)(params);
     };
     props.onClick = onClick;
     return Object.assign({}, compProps, { props });
@@ -55,8 +56,8 @@ export const initButtonSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   return compProps;
 };
 
-export const Button = ({ props, styles = { main: {} }, classes, meta }: ButtonProps) => {
-  const mainStyle = Object.assign(
+export const Button = ({ props, styles = { main: {} }, classes = {}, meta }: ButtonProps) => {
+  const mainStyle: BaseStyles = Object.assign(
     {},
     baseStyle.main,
     baseStyle[props?.type || 'default'],

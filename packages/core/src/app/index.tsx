@@ -1,5 +1,14 @@
-import type { AppProps, BaseValue, ComponentItem, Schemas, SetClassFun, SetPropsFun, SetValueFun } from '../types';
-import { Button, Checkbox, Image, Radio, Select } from '../components';
+import type {
+  AppProps,
+  BaseValue,
+  ComponentItem,
+  FindComp,
+  Schemas,
+  SetClassFun,
+  SetPropsFun,
+  SetValueFun,
+} from '../types';
+import { Button, Checkbox, Image, List, Radio, Select } from '../components';
 import { libraries } from '../library';
 import { getSchemasContext } from './context';
 
@@ -9,6 +18,7 @@ const ComponentMap = {
   Checkbox,
   Radio,
   Image,
+  List,
 };
 
 const Component = ({ component, id, ...rest }: ComponentItem & { key: BaseValue }) => {
@@ -23,6 +33,10 @@ export function RenderApp({ schemas, injectDependentFun }: AppProps) {
   const [state, setState] = libraries.useState<Schemas>(schemas);
 
   const SchemasContext = getSchemasContext();
+
+  const findComp: FindComp = (id) => {
+    return state.components.find((i) => i.id === id);
+  };
 
   const changeSchemasProps: SetPropsFun = (id, props) => {
     setState((schemas) => {
@@ -49,6 +63,7 @@ export function RenderApp({ schemas, injectDependentFun }: AppProps) {
       const comp = schemas.components.find((item) => item.id === id);
       if (comp) {
         classNames.forEach((name) => {
+          comp.classes ||= {};
           comp.classes[name] = true;
         });
       }
@@ -61,7 +76,9 @@ export function RenderApp({ schemas, injectDependentFun }: AppProps) {
       const comp = schemas.components.find((item) => item.id === id);
       if (comp) {
         classNames.forEach((name) => {
-          delete comp.classes[name];
+          if (comp.classes?.[name]) {
+            delete comp.classes[name];
+          }
         });
       }
       return { ...schemas };
@@ -69,6 +86,7 @@ export function RenderApp({ schemas, injectDependentFun }: AppProps) {
   };
 
   injectDependentFun({
+    findComp,
     setProps: changeSchemasProps,
     setValue: changeSchemasValue,
     addClasses,

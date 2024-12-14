@@ -375,6 +375,7 @@ interface HTMLAttributes extends AriaAttributes, EventHandlers<Events> {
    */
   is?: string;
   key?: Numberish;
+  ref?: { current: object | undefined };
 }
 
 interface ButtonHTMLAttributes extends HTMLAttributes {

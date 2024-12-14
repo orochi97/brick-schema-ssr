@@ -24,7 +24,7 @@ const baseStyle = {
 
 export const initRadioSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Radio') {
-    const props = compProps.props;
+    const props: RadioProps['props'] = Object.assign({}, baseProps, compProps.props);
     const funBody = isString(props.onChange) ? props.onChange : baseProps.onChange;
     const onChange = (params: EventContext) => {
       new Function('lib', funBody)(lib)(params);
@@ -35,7 +35,7 @@ export const initRadioSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   return compProps;
 };
 
-export const Radio = ({ id, props, styles = { main: {} }, classes, value }: RadioProps) => {
+export const Radio = ({ id, props, styles = { main: {} }, classes = {}, meta, value }: RadioProps) => {
   const mainStyle = Object.assign({}, styles.main);
 
   const SchemasContext = getSchemasContext();
@@ -43,7 +43,7 @@ export const Radio = ({ id, props, styles = { main: {} }, classes, value }: Radi
 
   const onChange = (newVal: BaseValue) => {
     if (isFunction(props?.onChange)) {
-      props?.onChange?.(newVal);
+      props?.onChange?.({ value: newVal, meta });
     }
     changeSchemasValue(id, newVal);
   };

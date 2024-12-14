@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  padding: 0;
   height: 100vh;
   width: 100vw;
 }
@@ -8,4 +9,8 @@ body {
   width: 100%;
   padding: 10px;
   background-color: wheat;
+}
+
+* {
+  box-sizing: border-box;
 }

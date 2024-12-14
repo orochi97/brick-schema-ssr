@@ -4,8 +4,17 @@ export const schemas: Schemas = {
   app: {
     init: `
       return async function() {
-        const image = await lib.http.get('http://localhost:3000/api/image')
+        const { http, consts } = lib;
+        const image = await http.get(consts.SERVER_URL + '/api/image')
         lib.sys.setProps(6, { src: image.src });
+
+        const list = await http.get(consts.SERVER_URL + '/api/list')
+        lib.sys.setProps(7, { list: list.map((item, index) => ({
+          ...item,
+          index,
+          label: 'Image' + (index + 1),
+          disabled: false,
+        })) });
       }
     `,
   },
@@ -26,16 +35,17 @@ export const schemas: Schemas = {
         label: '按钮',
         onClick: `
           return async function() {
-            const options = await lib.http.get('http://localhost:3000/api/options')
+            const { http, consts } = lib;
+            const options = await http.get(consts.SERVER_URL + '/api/options')
             lib.sys.setProps(4, { options });
             lib.sys.setValue(4, 'guangzhou');
             lib.sys.removeClasses(3, ['warn']);
             lib.sys.addClasses(3, ['error']);
+
+            console.log(lib)
           }
         `,
       },
-      styles: { main: {} },
-      classes: {},
     },
     {
       id: 2,
@@ -49,7 +59,6 @@ export const schemas: Schemas = {
         ],
       },
       styles: { main: { width: 120 } },
-      classes: {},
     },
     {
       id: 3,
@@ -62,7 +71,6 @@ export const schemas: Schemas = {
           { value: 'disabled', label: 'Disabled', disabled: true },
         ],
       },
-      styles: { main: {} },
       classes: { warn: true },
     },
     {
@@ -76,8 +84,6 @@ export const schemas: Schemas = {
           { value: 'disabled', label: 'Disabled', disabled: true },
         ],
       },
-      styles: { main: {} },
-      classes: {},
     },
     {
       id: 5,
@@ -94,7 +100,6 @@ export const schemas: Schemas = {
           objectFit: 'contain',
         },
       },
-      classes: {},
     },
     {
       id: 6,
@@ -111,7 +116,89 @@ export const schemas: Schemas = {
           objectFit: 'contain',
         },
       },
-      classes: {},
+    },
+    {
+      id: 7,
+      component: 'List',
+      props: {
+        list: [],
+        onScrollEnd: `
+          return async function() {
+            const { sys, http, consts, parent } = lib;
+            const listComp = sys.findComp(7);
+            const list = [...listComp.props.list]
+            const newList = await http.get(consts.SERVER_URL + '/api/list');
+            const len = list.length;
+            sys.setProps(7, {
+              list: list.concat(newList.map((item, index) => ({
+                ...item,
+                index: index + len,
+                label: 'Image' + (index + len + 1),
+                disabled: false,
+              }))),
+            });
+          }
+        `,
+      },
+      styles: {
+        main: {
+          padding: 10,
+          backgroundColor: 'white',
+          height: 480,
+          overflow: 'auto',
+        },
+        item: {
+          padding: 10,
+          marginBottom: 10,
+          borderWidth: 1,
+          borderStyle: 'solid',
+          borderColor: '#ccc',
+        },
+      },
+      children: [
+        {
+          id: 10086,
+          component: 'Image',
+          props: {
+            src: '',
+            width: 100,
+            height: 100,
+          },
+          styles: {
+            main: {
+              objectFit: 'contain',
+            },
+          },
+          extern: {
+            dataMap: {
+              src: 'src',
+            },
+          },
+        },
+        {
+          id: 10087,
+          component: 'Button',
+          props: {
+            type: 'danger',
+            label: 'delete',
+            onClick: `
+              return async function(context) {
+                const { sys, http, consts, parent } = lib;
+                const listComp = sys.findComp(parent.data.id);
+                const list = [...listComp.props.list]
+                list[context.meta.index].label = 'deleted';
+                list[context.meta.index].disabled = true;
+                sys.setProps(listComp.id, { list });
+              }
+            `,
+          },
+          extern: {
+            dataMap: {
+              disabled: 'disabled',
+            },
+          },
+        },
+      ],
     },
   ],
 };

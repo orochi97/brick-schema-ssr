@@ -12,20 +12,22 @@ export type BaseObject = Record<string, unknown>;
 
 type ComponentValue = BaseValue | BaseValue[] | BaseOption[] | undefined;
 
-export type BaseCompProps<T extends object, S extends string> = {
-  id: number;
-  styles: Record<S, BaseStyles>;
-  classes: BaseClasses;
-  extern?: {
-    dataMap?: BaseObject;
-  };
-  meta?: EventContext['meta'];
-} & T;
+export interface ContextMeta {
+  index: number;
+  data: BaseObject;
+}
 
 export interface EventContext {
   value: ComponentValue;
-  meta: {
-    index: number;
-    data: BaseObject;
-  };
+  meta: ContextMeta;
 }
+
+export type BaseCompProps<T extends object, S extends string> = {
+  id: number;
+  styles?: Record<S, BaseStyles>;
+  classes?: BaseClasses;
+  extern?: {
+    dataMap?: Record<string, string>;
+  };
+  meta?: ContextMeta;
+} & T;

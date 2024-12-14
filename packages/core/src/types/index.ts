@@ -21,7 +21,9 @@ export type Context<T> = {
 };
 
 export interface Libraries {
+  useRef: <T extends object>(s: T | null) => { current: T | undefined };
   useState: <T extends object>(s: T) => [T, (f: (s: T) => T) => void];
+  useEffect: (fun: () => void, deps?: unknown[]) => void;
   useContext: <T>(c: Context<T>) => T;
   createContext: <T>(defaultValue: T) => Context<T>;
   useStyles: (s: BaseStyles) => BaseStyles;
@@ -42,7 +44,10 @@ export type SetValueFun = (id: number, value?: BaseValue | BaseValue[]) => void;
 
 export type SetClassFun = (id: number, classNames: ClassNames) => void;
 
+export type FindComp = (id: number) => ComponentItem | undefined;
+
 export type InjectDependentFun = (p: {
+  findComp: FindComp;
   setProps: SetPropsFun;
   setValue: SetValueFun;
   addClasses: SetClassFun;

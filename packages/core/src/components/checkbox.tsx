@@ -24,7 +24,7 @@ const baseStyle = {
 
 export const initCheckboxSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Checkbox') {
-    const props = compProps.props;
+    const props: CheckboxProps['props'] = Object.assign({}, baseProps, compProps.props);
     const funBody = isString(props.onChange) ? props.onChange : baseProps.onChange;
     const onChange = (params: EventContext) => {
       new Function('lib', funBody)(lib)(params);
@@ -35,8 +35,8 @@ export const initCheckboxSchemas = (compProps: ComponentItem, lib: InjectLib) =>
   return compProps;
 };
 
-export const Checkbox = ({ id, props, styles = { main: {} }, value = [], classes, meta }: CheckboxProps) => {
-  const mainStyle = Object.assign({}, styles.main);
+export const Checkbox = ({ id, props, styles = { main: {} }, value = [], classes = {}, meta }: CheckboxProps) => {
+  const mainStyle = Object.assign({}, 'main' in styles ? styles.main : {});
 
   const SchemasContext = getSchemasContext();
   const { changeSchemasValue } = libraries.useContext(SchemasContext);

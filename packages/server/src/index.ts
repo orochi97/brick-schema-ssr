@@ -43,6 +43,23 @@ router.get('/image', async (ctx) => {
   };
 });
 
+router.get('/list', async (ctx) => {
+  ctx.body = [
+    {
+      src: 'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
+    },
+    {
+      src: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+    },
+    {
+      src: 'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
+    },
+    {
+      src: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+    },
+  ];
+});
+
 app.use(koaStatic(clientDir));
 
 app.use(router.routes());

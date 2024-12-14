@@ -1,4 +1,4 @@
-import type { ComponentItem, ImageProps, InjectLib } from '../types';
+import type { ComponentItem, EventContext, ImageProps, InjectLib } from '../types';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 
@@ -14,10 +14,10 @@ const baseStyle = {
 
 export const initImageSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Image') {
-    const props = compProps.props;
+    const props: ImageProps['props'] = Object.assign({}, baseProps, compProps.props);
     const funBody = isString(props.onClick) ? props?.onClick : baseProps.onClick;
-    const onClick = () => {
-      new Function('lib', funBody)(lib)();
+    const onClick = (params: EventContext) => {
+      new Function('lib', funBody)(lib)(params);
     };
     props.onClick = onClick;
     return Object.assign({}, compProps, { props });
@@ -25,12 +25,15 @@ export const initImageSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   return compProps;
 };
 
-export const Image = ({ props, styles = { main: {} }, classes }: ImageProps) => {
-  const mainStyle = Object.assign({}, baseStyle.main, styles.main);
+export const Image = ({ props, styles = { main: {} }, classes = {}, meta }: ImageProps) => {
+  const mainStyle = Object.assign({}, baseStyle.main, 'main' in styles ? styles.main : {});
 
   const onClick = () => {
     if (isFunction(props?.onClick)) {
-      props?.onClick();
+      props?.onClick({
+        value: undefined,
+        meta,
+      });
     }
   };
 

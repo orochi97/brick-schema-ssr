@@ -21,7 +21,7 @@ const baseStyle = {
 
 export const initSelectSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   if (compProps.component === 'Select') {
-    const props = compProps.props;
+    const props: SelectProps['props'] = Object.assign({}, baseProps, compProps.props);
     const funBody = isString(props.onChange) ? props.onChange : baseProps.onChange;
     const onChange = (params: EventContext) => {
       new Function('lib', funBody)(lib)(params);
@@ -32,7 +32,7 @@ export const initSelectSchemas = (compProps: ComponentItem, lib: InjectLib) => {
   return compProps;
 };
 
-export const Select = ({ id, props, styles = { main: {} }, classes, value }: SelectProps) => {
+export const Select = ({ id, props, styles = { main: {} }, classes = {}, meta, value }: SelectProps) => {
   const mainStyle = Object.assign({}, styles.main);
 
   const SchemasContext = getSchemasContext();
@@ -41,12 +41,12 @@ export const Select = ({ id, props, styles = { main: {} }, classes, value }: Sel
   const onChange = (e: Event) => {
     const target = e.target as HTMLSelectElement;
     const val = target.value;
-    const realValue = props?.options?.find((item) => String(item.value) === val)?.value;
+    const newVal = props?.options?.find((item) => String(item.value) === val)?.value;
 
     if (isFunction(props?.onChange)) {
-      props?.onChange?.(realValue);
+      props?.onChange?.({ value: newVal, meta });
     }
-    changeSchemasValue(id, realValue);
+    changeSchemasValue(id, newVal);
   };
   return (
     <select

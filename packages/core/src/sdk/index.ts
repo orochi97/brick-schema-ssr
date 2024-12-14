@@ -3,6 +3,7 @@ import { insertCss } from 'insert-css';
 
 import type {
   AppProps,
+  FindComp,
   InjectDependentFun,
   InjectLib,
   Schemas,
@@ -21,7 +22,7 @@ export abstract class BaseSdk {
     this.dependency = dependency;
   }
   async initSchemas() {
-    const inject: InjectLib = {
+    await new Function('lib', this.schemas.app.init)({
       sys: this.util,
       ...this.dependency,
       parent: {
@@ -29,12 +30,21 @@ export abstract class BaseSdk {
         data: null,
       },
       self: null,
-    };
-    await new Function('lib', this.schemas.app.init)(inject)();
+    } satisfies InjectLib)();
+
     this.schemas.components.forEach((item, index) => {
-      this.schemas.components[index] = initSchemasMap[item.component](item, inject);
+      this.schemas.components[index] = initSchemasMap[item.component](item, {
+        sys: this.util,
+        ...this.dependency,
+        parent: {
+          parent: null,
+          data: null,
+        },
+        self: item,
+      } satisfies InjectLib);
     });
   }
+  findComp: FindComp = () => undefined;
   setProps: SetPropsFun = (id, props) => {
     const comp = this.schemas.components.find((item) => item.id === id);
     if (comp) {
@@ -51,6 +61,7 @@ export abstract class BaseSdk {
     const comp = this.schemas.components.find((item) => item.id === id);
     if (comp) {
       classNames.forEach((name) => {
+        comp.classes ||= {};
         comp.classes[name] = true;
       });
     }
@@ -59,11 +70,14 @@ export abstract class BaseSdk {
     const comp = this.schemas.components.find((item) => item.id === id);
     if (comp) {
       classNames.forEach((name) => {
-        delete comp.classes[name];
+        if (comp.classes?.[name]) {
+          delete comp.classes[name];
+        }
       });
     }
   };
-  injectDependentFun: InjectDependentFun = ({ setProps, setValue, addClasses, removeClasses }) => {
+  injectDependentFun: InjectDependentFun = ({ findComp, setProps, setValue, addClasses, removeClasses }) => {
+    this.findComp = findComp;
     this.setProps = setProps;
     this.setValue = setValue;
     this.addClasses = addClasses;
@@ -88,6 +102,9 @@ export abstract class BaseSdk {
   }
   get util(): Parameters<InjectDependentFun>[number] {
     return {
+      findComp: (id) => {
+        return this.findComp(id);
+      },
       setProps: (id, props) => {
         this.setProps(id, props);
       },

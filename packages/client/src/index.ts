@@ -8,6 +8,8 @@ import './index.css';
 
 const http = createHttp(fetch.bind(window));
 
+const consts = { SERVER_URL: 'http://localhost:3000' };
+
 export const init = async (RenderSdk: typeof ReactSdk | typeof SolidSdk | typeof VueSdk) => {
   const schemas = await fetch('/api/schemas').then((res) => res.json());
 
@@ -16,7 +18,7 @@ export const init = async (RenderSdk: typeof ReactSdk | typeof SolidSdk | typeof
   const $root = document.getElementById('root');
 
   if ($root && schemas) {
-    const sdk = new RenderSdk({ schemas, dependency: { http } });
+    const sdk = new RenderSdk({ schemas, dependency: { http, consts } });
     if (process.env.RENDER_TYPE === 'csr') {
       sdk.createRoot($root);
     } else if (process.env.RENDER_TYPE === 'ssr') {

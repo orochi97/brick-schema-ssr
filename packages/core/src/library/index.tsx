@@ -4,7 +4,9 @@ import { type Context, type Libraries } from '../types';
 import { isString } from '../utils';
 
 export const libraries: Libraries = {
+  useRef: () => ({ current: undefined }),
   useState: <T,>(s: T) => [s, (f: (d: T) => T) => f(s)],
+  useEffect: () => {},
   useContext: <T,>(s: Context<T>) => s.defaultValue,
   createContext: <T,>(s: T) => {
     return {
