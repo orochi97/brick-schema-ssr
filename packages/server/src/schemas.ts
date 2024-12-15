@@ -25,6 +25,10 @@ export const schemas: Schemas = {
     .error {
       color: red;
     }
+    .selected {
+      border: 2px solid #87d068;
+      border-radius: 8px;
+    }
   `,
   components: [
     {
@@ -41,8 +45,6 @@ export const schemas: Schemas = {
             lib.sys.setValue(4, 'guangzhou');
             lib.sys.removeClasses(3, ['warn']);
             lib.sys.addClasses(3, ['error']);
-
-            console.log(lib)
           }
         `,
       },
@@ -153,6 +155,7 @@ export const schemas: Schemas = {
           borderWidth: 1,
           borderStyle: 'solid',
           borderColor: '#ccc',
+          display: 'flex',
         },
       },
       children: [
@@ -176,37 +179,53 @@ export const schemas: Schemas = {
           },
         },
         {
-          id: 10087,
-          component: 'Text',
+          id: 10089,
+          component: 'View',
           props: {},
-          extern: {
-            dataMap: {
-              label: 'label',
+          styles: {
+            main: {
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-evenly',
+              flexDirection: 'column',
+              marginLeft: 10,
             },
           },
-        },
-        {
-          id: 10088,
-          component: 'Button',
-          props: {
-            type: 'danger',
-            label: 'delete',
-            onClick: `
-              return async function(context) {
-                const { sys, http, consts, parent } = lib;
-                const listComp = sys.findComp(parent.data.id);
-                const list = [...listComp.props.list]
-                list[context.meta.index].label = 'deleted';
-                list[context.meta.index].disabled = true;
-                sys.setProps(listComp.id, { list });
-              }
-            `,
-          },
-          extern: {
-            dataMap: {
-              disabled: 'disabled',
+          children: [
+            {
+              id: 10087,
+              component: 'Text',
+              props: {},
+              extern: {
+                dataMap: {
+                  label: 'label',
+                },
+              },
             },
-          },
+            {
+              id: 10088,
+              component: 'Button',
+              props: {
+                type: 'danger',
+                label: 'delete',
+                onClick: `
+                  return async function(context) {
+                    const { sys, http, consts, parent } = lib;
+                    const listComp = sys.findComp(parent.parent.data.id);
+                    const list = [...listComp.props.list]
+                    list[context.meta.index].label = 'deleted';
+                    list[context.meta.index].disabled = true;
+                    sys.setProps(listComp.id, { list });
+                  }
+                `,
+              },
+              extern: {
+                dataMap: {
+                  disabled: 'disabled',
+                },
+              },
+            },
+          ],
         },
       ],
     },

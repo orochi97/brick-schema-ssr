@@ -5,6 +5,7 @@ import { initListSchemas, List } from './list';
 import { initRadioSchemas, Radio } from './radio';
 import { initSelectSchemas, Select } from './select';
 import { initTextSchemas, Text } from './text';
+import { initViewSchemas, View } from './view';
 
 export * from './button';
 export * from './select';
@@ -13,6 +14,7 @@ export * from './radio';
 export * from './image';
 export * from './list';
 export * from './text';
+export * from './view';
 
 export const componentMap = {
   Button: {
@@ -42,5 +44,9 @@ export const componentMap = {
   Text: {
     init: initTextSchemas,
     render: Text,
+  },
+  View: {
+    init: initViewSchemas,
+    render: View,
   },
 };

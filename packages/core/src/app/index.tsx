@@ -1,33 +1,7 @@
-import type {
-  AppProps,
-  BaseValue,
-  ComponentItem,
-  FindComp,
-  Schemas,
-  SetClassFun,
-  SetPropsFun,
-  SetValueFun,
-} from '../types';
-import { Button, Checkbox, Image, List, Radio, Select } from '../components';
+import type { AppProps, FindComp, Schemas, SetClassFun, SetPropsFun, SetValueFun } from '../types';
+import { RenderComponent } from '../components/@component';
 import { libraries } from '../library';
 import { getSchemasContext } from './context';
-
-const ComponentMap = {
-  Button,
-  Select,
-  Checkbox,
-  Radio,
-  Image,
-  List,
-};
-
-const Component = ({ component, id, ...rest }: ComponentItem & { key: BaseValue }) => {
-  const Comp = ComponentMap[component] as () => JSX.Element;
-  if (Comp) {
-    return <Comp {...rest} id={id} />;
-  }
-  return <>无此组件</>;
-};
 
 export function RenderApp({ schemas, injectDependentFun }: AppProps) {
   const [state, setState] = libraries.useState<Schemas>(schemas);
@@ -97,7 +71,7 @@ export function RenderApp({ schemas, injectDependentFun }: AppProps) {
     <SchemasContext.Provider value={{ changeSchemasValue }}>
       <div>
         {state.components.map(({ id, ...rest }) => {
-          return <Component {...rest} key={id} id={id} />;
+          return <RenderComponent {...rest} key={id} id={id} />;
         })}
       </div>
     </SchemasContext.Provider>

@@ -6,6 +6,7 @@ import type { ListProps } from './list';
 import type { RadioProps } from './radio';
 import type { SelectProps } from './select';
 import type { TextProps } from './text';
+import type { ViewProps } from './view';
 
 export type * from './common';
 export type * from './button';
@@ -15,6 +16,7 @@ export type * from './image';
 export type * from './radio';
 export type * from './list';
 export type * from './text';
+export type * from './view';
 
 export interface ComponentProps {
   Button: ButtonProps;
@@ -24,6 +26,7 @@ export interface ComponentProps {
   Image: ImageProps;
   List: ListProps;
   Text: TextProps;
+  View: ViewProps;
 }
 
 export type ComponentItem = {
@@ -41,4 +44,5 @@ export type UnionProps = ValueOf<{
   Image: ImageProps['props'];
   List: ListProps['props'];
   Text: TextProps['props'];
+  View: ViewProps['props'];
 }>;

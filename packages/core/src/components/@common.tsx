@@ -4,7 +4,7 @@ import { RenderComponent } from './@component';
 
 interface Props {
   key?: BaseValue;
-  meta: ContextMeta;
+  meta?: ContextMeta;
   slots: ComponentItem[];
 }
 
