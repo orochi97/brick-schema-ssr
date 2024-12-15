@@ -16,11 +16,11 @@ export const libraries: Libraries = {
     };
   },
   useStyles: (s) => s,
-  useClass: (cls, data = {}) => {
+  useClasses: (cls, data = {}) => {
     if (cls) {
       const newCls = { ...cls };
       for (const key in cls) {
-        if (key in data && isString(cls[key])) {
+        if (isString(cls[key])) {
           newCls[key] = !!data[cls[key]];
         }
       }

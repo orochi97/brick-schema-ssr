@@ -29,6 +29,9 @@ export const schemas: Schemas = {
       border: 2px solid #87d068;
       border-radius: 8px;
     }
+    .flex {
+      display: flex !important;
+    }
   `,
   components: [
     {
@@ -156,6 +159,7 @@ export const schemas: Schemas = {
           borderStyle: 'solid',
           borderColor: '#ccc',
           display: 'flex',
+          position: 'relative',
         },
       },
       children: [
@@ -172,10 +176,38 @@ export const schemas: Schemas = {
               objectFit: 'contain',
             },
           },
+          classes: {
+            selected: 'disabled',
+          },
           extern: {
             dataMap: {
               src: 'src',
             },
+          },
+        },
+        {
+          id: 10090,
+          component: 'Text',
+          props: {
+            label: '✔',
+          },
+          styles: {
+            main: {
+              color: 'white',
+              backgroundColor: '#87d068',
+              position: 'absolute',
+              width: 24,
+              height: 24,
+              display: 'none',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '50%',
+              left: 16,
+              top: 16,
+            },
+          },
+          classes: {
+            flex: 'disabled',
           },
         },
         {

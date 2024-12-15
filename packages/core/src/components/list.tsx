@@ -1,14 +1,7 @@
-import type { ComponentItem, EventContext, InjectLib, ListProps } from '../types';
+import type { ComponentItem, ComponentMap, EventContext, InjectLib, ListProps } from '../types';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 import { SlotItemChild } from './@common';
-import { initButtonSchemas } from './button';
-import { initCheckboxSchemas } from './checkbox';
-import { initImageSchemas } from './image';
-import { initRadioSchemas } from './radio';
-import { initSelectSchemas } from './select';
-import { initTextSchemas } from './text';
-import { initViewSchemas } from './view';
 
 const baseProps = {
   children: [],
@@ -24,19 +17,8 @@ const baseStyle = {
   },
 };
 
-export const initListSchemas = (compProps: ComponentItem, lib: InjectLib) => {
+export const initListSchemas = (compProps: ComponentItem, lib: InjectLib, componentMap: ComponentMap) => {
   if (compProps.component === 'List') {
-    const initSchemasMap = {
-      Button: initButtonSchemas,
-      Select: initSelectSchemas,
-      Checkbox: initCheckboxSchemas,
-      Radio: initRadioSchemas,
-      Image: initImageSchemas,
-      List: initListSchemas,
-      Text: initTextSchemas,
-      View: initViewSchemas,
-    };
-
     const props: ListProps['props'] = Object.assign({}, baseProps, compProps.props);
     const funBody = isString(props.onScrollEnd) ? props?.onScrollEnd : baseProps.onScrollEnd;
     const onScrollEnd = (params: EventContext) => {
@@ -45,14 +27,18 @@ export const initListSchemas = (compProps: ComponentItem, lib: InjectLib) => {
     props.onScrollEnd = onScrollEnd;
 
     compProps.children?.forEach((item, index) => {
-      compProps.children[index] = initSchemasMap[item.component](item, {
-        ...lib,
-        parent: {
-          parent: lib.parent,
-          data: compProps,
+      compProps.children[index] = componentMap[item.component].init(
+        item,
+        {
+          ...lib,
+          parent: {
+            parent: lib.parent,
+            data: compProps,
+          },
+          self: item,
         },
-        self: item,
-      });
+        componentMap,
+      );
     });
 
     return Object.assign({}, compProps, { props });
@@ -78,7 +64,7 @@ export const List = ({ props, children, styles = { main: {}, item: {} }, classes
   }, []);
 
   return (
-    <div style={libraries.useStyles(mainStyle)} className={libraries.useClass(classes, meta?.data)}>
+    <div style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data)}>
       {props.list.map((item, index) => {
         const meta = {
           data: item,

@@ -27,7 +27,7 @@ export interface Libraries {
   useContext: <T>(c: Context<T>) => T;
   createContext: <T>(defaultValue: T) => Context<T>;
   useStyles: (s: BaseStyles) => BaseStyles;
-  useClass: (c: BaseClasses, data?: BaseObject) => string;
+  useClasses: (c: BaseClasses, data?: BaseObject) => string;
 }
 
 export interface Schemas {

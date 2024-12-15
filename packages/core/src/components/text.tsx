@@ -39,7 +39,7 @@ export const Text = ({ props, styles = { main: {} }, classes = {}, meta }: TextP
   };
 
   return (
-    <div style={libraries.useStyles(mainStyle)} className={libraries.useClass(classes, meta?.data)} onClick={onClick}>
+    <div style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data)} onClick={onClick}>
       {props?.label || baseProps.label}
     </div>
   );

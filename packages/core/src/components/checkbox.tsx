@@ -58,7 +58,7 @@ export const Checkbox = ({ id, props, styles = { main: {} }, value = [], classes
   };
 
   return (
-    <span style={libraries.useStyles(mainStyle)} className={libraries.useClass(classes)}>
+    <span style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data)}>
       {props?.options?.map(({ value: itemValue, label, disabled }) => {
         const optionStyle = Object.assign({}, baseStyle.main, disabled ? baseStyle.disabled : {});
         return (

@@ -33,15 +33,19 @@ export abstract class BaseSdk {
     } satisfies InjectLib)();
 
     this.schemas.components.forEach((item, index) => {
-      this.schemas.components[index] = componentMap[item.component].init(item, {
-        sys: this.util,
-        ...this.dependency,
-        parent: {
-          parent: null,
-          data: null,
-        },
-        self: item,
-      } satisfies InjectLib);
+      this.schemas.components[index] = componentMap[item.component].init(
+        item,
+        {
+          sys: this.util,
+          ...this.dependency,
+          parent: {
+            parent: null,
+            data: null,
+          },
+          self: item,
+        } satisfies InjectLib,
+        componentMap,
+      );
     });
   }
   findComp: FindComp = () => undefined;

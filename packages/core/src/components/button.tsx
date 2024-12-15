@@ -78,7 +78,7 @@ export const Button = ({ props, styles = { main: {} }, classes = {}, meta }: But
     <button
       disabled={props.disabled}
       style={libraries.useStyles(mainStyle)}
-      className={libraries.useClass(classes, meta?.data)}
+      className={libraries.useClasses(classes, meta?.data)}
       onClick={onClick}
     >
       {props?.label || baseProps.label}

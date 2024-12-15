@@ -1,14 +1,7 @@
-import type { ComponentItem, EventContext, InjectLib, ViewProps } from '../types';
+import type { ComponentItem, ComponentMap, EventContext, InjectLib, ViewProps } from '../types';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 import { SlotItemChild } from './@common';
-import { initButtonSchemas } from './button';
-import { initCheckboxSchemas } from './checkbox';
-import { initImageSchemas } from './image';
-import { initListSchemas } from './list';
-import { initRadioSchemas } from './radio';
-import { initSelectSchemas } from './select';
-import { initTextSchemas } from './text';
 
 const baseProps = {
   children: [],
@@ -21,19 +14,8 @@ const baseStyle = {
   main: {},
 };
 
-export const initViewSchemas = (compProps: ComponentItem, lib: InjectLib) => {
+export const initViewSchemas = (compProps: ComponentItem, lib: InjectLib, componentMap: ComponentMap) => {
   if (compProps.component === 'View') {
-    const initSchemasMap = {
-      Button: initButtonSchemas,
-      Select: initSelectSchemas,
-      Checkbox: initCheckboxSchemas,
-      Radio: initRadioSchemas,
-      Image: initImageSchemas,
-      List: initListSchemas,
-      Text: initTextSchemas,
-      View: initViewSchemas,
-    };
-
     const props: ViewProps['props'] = Object.assign({}, baseProps, compProps.props);
     const funBody = isString(props.onClick) ? props?.onClick : baseProps.onClick;
     const onClick = (params: EventContext) => {
@@ -42,14 +24,18 @@ export const initViewSchemas = (compProps: ComponentItem, lib: InjectLib) => {
     props.onClick = onClick;
 
     compProps.children?.forEach((item, index) => {
-      compProps.children[index] = initSchemasMap[item.component](item, {
-        ...lib,
-        parent: {
-          parent: lib.parent,
-          data: compProps,
+      compProps.children[index] = componentMap[item.component].init(
+        item,
+        {
+          ...lib,
+          parent: {
+            parent: lib.parent,
+            data: compProps,
+          },
+          self: item,
         },
-        self: item,
-      });
+        componentMap,
+      );
     });
 
     return Object.assign({}, compProps, { props });
@@ -74,7 +60,7 @@ export const View = ({ props, children, styles = { main: {} }, classes = {}, met
   }, []);
 
   return (
-    <div style={libraries.useStyles(mainStyle)} className={libraries.useClass(classes, meta?.data)}>
+    <div style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data)}>
       <SlotItemChild meta={meta} slots={children} />
     </div>
   );

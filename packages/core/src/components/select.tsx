@@ -51,7 +51,7 @@ export const Select = ({ id, props, styles = { main: {} }, classes = {}, meta, v
   return (
     <select
       style={libraries.useStyles(mainStyle)}
-      className={libraries.useClass(classes)}
+      className={libraries.useClasses(classes, meta?.data)}
       value={value}
       onChange={onChange}
     >

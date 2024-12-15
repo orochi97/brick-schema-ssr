@@ -1,4 +1,5 @@
 import type { ValueOf } from '..';
+import type { InjectLib } from '..';
 import type { ButtonProps } from './button';
 import type { CheckboxProps } from './checkbox';
 import type { ImageProps } from './image';
@@ -46,3 +47,10 @@ export type UnionProps = ValueOf<{
   Text: TextProps['props'];
   View: ViewProps['props'];
 }>;
+
+export type ComponentMap = {
+  [K in keyof ComponentProps]: {
+    init: (compProps: ComponentItem, lib: InjectLib, map: ComponentMap) => ComponentItem;
+    render: (compProps: ComponentProps[K]) => JSX.Element;
+  };
+};

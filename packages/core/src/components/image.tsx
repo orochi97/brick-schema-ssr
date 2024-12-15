@@ -43,7 +43,7 @@ export const Image = ({ props, styles = { main: {} }, classes = {}, meta }: Imag
       width={props?.width}
       height={props?.height}
       style={libraries.useStyles(mainStyle)}
-      className={libraries.useClass(classes)}
+      className={libraries.useClasses(classes, meta?.data)}
       onClick={onClick}
     />
   );

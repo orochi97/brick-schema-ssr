@@ -1,3 +1,4 @@
+import { type ComponentMap } from '../types';
 import { Button, initButtonSchemas } from './button';
 import { Checkbox, initCheckboxSchemas } from './checkbox';
 import { Image, initImageSchemas } from './image';
@@ -16,7 +17,7 @@ export * from './list';
 export * from './text';
 export * from './view';
 
-export const componentMap = {
+export const componentMap: ComponentMap = {
   Button: {
     init: initButtonSchemas,
     render: Button,
