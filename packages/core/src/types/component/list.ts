@@ -3,6 +3,8 @@ import type { BaseCompProps, BaseObject, EventContext } from './common';
 
 type SupportStylePart = 'main' | 'item';
 
+type SupportPropCover = 'list';
+
 export type ListProps = BaseCompProps<
   {
     props: {
@@ -11,5 +13,6 @@ export type ListProps = BaseCompProps<
     };
     children: ComponentItem[];
   },
-  SupportStylePart
+  SupportStylePart,
+  SupportPropCover
 >;

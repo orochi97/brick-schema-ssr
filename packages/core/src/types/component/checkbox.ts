@@ -2,6 +2,8 @@ import type { BaseCompProps, BaseOption, BaseValue, EventContext } from './commo
 
 type SupportStylePart = 'main';
 
+type SupportPropCover = 'options';
+
 export type CheckboxProps = BaseCompProps<
   {
     props: {
@@ -10,5 +12,6 @@ export type CheckboxProps = BaseCompProps<
     };
     value?: BaseValue[];
   },
-  SupportStylePart
+  SupportStylePart,
+  SupportPropCover
 >;

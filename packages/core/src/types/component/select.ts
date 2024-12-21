@@ -2,6 +2,8 @@ import type { BaseCompProps, BaseOption, BaseValue, EventContext } from './commo
 
 type SupportStylePart = 'main';
 
+type SupportPropCover = 'options';
+
 export type SelectProps = BaseCompProps<
   {
     props: {
@@ -10,5 +12,6 @@ export type SelectProps = BaseCompProps<
     };
     value?: BaseValue;
   },
-  SupportStylePart
+  SupportStylePart,
+  SupportPropCover
 >;

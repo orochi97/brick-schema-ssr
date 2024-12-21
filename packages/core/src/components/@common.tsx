@@ -17,7 +17,7 @@ export const SlotItemChild = ({ meta, store, slots }: Props) => {
         if (dataMap) {
           for (const key in dataMap) {
             if (key in item.props && !isFunction(item.props[key as keyof typeof item.props])) {
-              const dataKey = dataMap[key];
+              const dataKey = dataMap[key as unknown as keyof typeof dataMap];
               if (meta?.data && dataKey in meta.data) {
                 (item.props as Record<string, unknown>)[key] = meta.data[dataKey];
               } else if (store && dataKey in store) {

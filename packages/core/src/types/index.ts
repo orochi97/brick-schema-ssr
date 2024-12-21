@@ -6,6 +6,7 @@ import type {
   ClassNames,
   ComponentItem,
   ContextMeta,
+  ID,
   UnionProps,
 } from './component';
 
@@ -41,13 +42,13 @@ export interface Schemas {
 
 export type Store = BaseObject;
 
-export type SetPropsFun = (id: number, props: UnionProps) => void;
+export type SetPropsFun = (id: ID, props: UnionProps) => void;
 
-export type SetValueFun = (id: number, value?: BaseValue | BaseValue[]) => void;
+export type SetValueFun = (id: ID, value?: BaseValue | BaseValue[]) => void;
 
-export type SetClassFun = (id: number, classNames: ClassNames) => void;
+export type SetClassFun = (id: ID, classNames: ClassNames) => void;
 
-export type FindComp = (id: number) => ComponentItem | undefined;
+export type FindComp = (id: ID) => ComponentItem | undefined;
 
 export type SetStore = (s: Partial<Store>) => void;
 

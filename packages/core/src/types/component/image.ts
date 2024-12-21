@@ -2,6 +2,8 @@ import type { BaseCompProps, EventContext } from './common';
 
 type SupportStylePart = 'main';
 
+type SupportPropCover = 'src' | 'width' | 'height';
+
 export type ImageProps = BaseCompProps<
   {
     props: {
@@ -11,5 +13,6 @@ export type ImageProps = BaseCompProps<
       onClick?: ((p: EventContext) => void) | string;
     };
   },
-  SupportStylePart
+  SupportStylePart,
+  SupportPropCover
 >;

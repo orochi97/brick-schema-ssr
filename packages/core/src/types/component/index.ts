@@ -32,7 +32,6 @@ export interface ComponentProps {
 
 export type ComponentItem = {
   [K in keyof ComponentProps]: {
-    id: number;
     component: K;
   } & ComponentProps[K];
 }[keyof ComponentProps];

@@ -135,7 +135,7 @@ export const schemas: Schemas = {
       },
     },
     {
-      id: 10090,
+      id: 10,
       component: 'Text',
       extern: {
         dataMap: {
@@ -195,7 +195,6 @@ export const schemas: Schemas = {
       },
       children: [
         {
-          id: 10086,
           component: 'Image',
           props: {
             src: '',
@@ -213,12 +212,10 @@ export const schemas: Schemas = {
           extern: {
             dataMap: {
               src: 'src',
-              disabled: 'disabled',
             },
           },
         },
         {
-          id: 10090,
           component: 'Text',
           props: {
             label: '✔',
@@ -243,7 +240,6 @@ export const schemas: Schemas = {
           },
         },
         {
-          id: 10089,
           component: 'View',
           props: {},
           styles: {
@@ -257,7 +253,6 @@ export const schemas: Schemas = {
           },
           children: [
             {
-              id: 10087,
               component: 'Text',
               props: {},
               extern: {
@@ -267,7 +262,6 @@ export const schemas: Schemas = {
               },
             },
             {
-              id: 10088,
               component: 'Button',
               props: {
                 type: 'danger',

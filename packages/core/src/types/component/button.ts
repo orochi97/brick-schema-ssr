@@ -4,6 +4,8 @@ export type ButtonKind = 'primary' | 'success' | 'danger' | 'default';
 
 type SupportStylePart = 'main';
 
+type SupportPropCover = 'disabled' | 'label' | 'type';
+
 export type ButtonProps = BaseCompProps<
   {
     props: {
@@ -13,5 +15,6 @@ export type ButtonProps = BaseCompProps<
       onClick?: ((p: EventContext) => void) | string;
     };
   },
-  SupportStylePart
+  SupportStylePart,
+  SupportPropCover
 >;
