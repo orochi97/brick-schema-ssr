@@ -1,12 +1,22 @@
-import type { AppProps, FindComp, Schemas, SetClassFun, SetPropsFun, SetValueFun } from '../types';
-import { RenderComponent } from '../components/@component';
+import type { AppProps, FindComp, GetStore, Schemas, SetClassFun, SetPropsFun, SetStore, SetValueFun } from '../types';
+import { SlotItemChild } from '../components/@common';
 import { libraries } from '../library';
 import { getSchemasContext } from './context';
 
-export function RenderApp({ schemas, injectDependentFun }: AppProps) {
+export function RenderApp({ schemas, store, injectDependentFun }: AppProps) {
   const [state, setState] = libraries.useState<Schemas>(schemas);
+  const [storeState, setStoreState] = libraries.useState(store || {});
 
   const SchemasContext = getSchemasContext();
+
+  const getStore: GetStore = () => storeState;
+
+  const setStore: SetStore = (newStore) => {
+    setStoreState((store) => {
+      Object.assign(store, newStore);
+      return { ...store };
+    });
+  };
 
   const findComp: FindComp = (id) => {
     return state.components.find((i) => i.id === id);
@@ -65,14 +75,14 @@ export function RenderApp({ schemas, injectDependentFun }: AppProps) {
     setValue: changeSchemasValue,
     addClasses,
     removeClasses,
+    getStore,
+    setStore,
   });
 
   return (
-    <SchemasContext.Provider value={{ changeSchemasValue }}>
+    <SchemasContext.Provider value={{ changeSchemasValue, store: storeState }}>
       <div>
-        {state.components.map(({ id, ...rest }) => {
-          return <RenderComponent {...rest} key={id} id={id} />;
-        })}
+        <SlotItemChild store={storeState} slots={state.components} />
       </div>
     </SchemasContext.Provider>
   );

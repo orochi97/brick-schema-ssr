@@ -4,21 +4,26 @@ import { insertCss } from 'insert-css';
 import type {
   AppProps,
   FindComp,
+  GetStore,
   InjectDependentFun,
   InjectLib,
   Schemas,
   SdkConstructorParams,
   SetClassFun,
   SetPropsFun,
+  SetStore,
   SetValueFun,
+  Store,
 } from '../types';
 import { componentMap } from '../components';
 
 export abstract class BaseSdk {
   protected schemas: Schemas;
+  private declare store: Store;
   private dependency: SdkConstructorParams['dependency'];
-  constructor({ schemas, dependency }: SdkConstructorParams) {
+  constructor({ schemas, store, dependency }: SdkConstructorParams) {
     this.schemas = schemas;
+    this.store = store || {};
     this.dependency = dependency;
   }
   async initSchemas() {
@@ -48,6 +53,8 @@ export abstract class BaseSdk {
       );
     });
   }
+  setStore: SetStore = () => {};
+  getStore: GetStore = () => ({});
   findComp: FindComp = () => undefined;
   setProps: SetPropsFun = (id, props) => {
     const comp = this.schemas.components.find((item) => item.id === id);
@@ -80,12 +87,22 @@ export abstract class BaseSdk {
       });
     }
   };
-  injectDependentFun: InjectDependentFun = ({ findComp, setProps, setValue, addClasses, removeClasses }) => {
+  injectDependentFun: InjectDependentFun = ({
+    findComp,
+    setProps,
+    setValue,
+    addClasses,
+    removeClasses,
+    getStore,
+    setStore,
+  }) => {
     this.findComp = findComp;
     this.setProps = setProps;
     this.setValue = setValue;
     this.addClasses = addClasses;
     this.removeClasses = removeClasses;
+    this.getStore = getStore;
+    this.setStore = setStore;
   };
   insertCss() {
     if (this.schemas.css) {
@@ -101,6 +118,7 @@ export abstract class BaseSdk {
   get appProps(): AppProps {
     return {
       schemas: this.schemas,
+      store: this.store,
       injectDependentFun: this.injectDependentFun,
     };
   }
@@ -120,6 +138,12 @@ export abstract class BaseSdk {
       },
       removeClasses: (id, value) => {
         this.removeClasses(id, value);
+      },
+      getStore: () => {
+        return this.getStore();
+      },
+      setStore: (p) => {
+        this.setStore(p);
       },
     };
   }

@@ -39,7 +39,7 @@ export const Checkbox = ({ id, props, styles = { main: {} }, value = [], classes
   const mainStyle = Object.assign({}, 'main' in styles ? styles.main : {});
 
   const SchemasContext = getSchemasContext();
-  const { changeSchemasValue } = libraries.useContext(SchemasContext);
+  const { changeSchemasValue, store } = libraries.useContext(SchemasContext);
 
   const onChange = (val: BaseValue) => {
     const newVal = [...value];
@@ -58,7 +58,7 @@ export const Checkbox = ({ id, props, styles = { main: {} }, value = [], classes
   };
 
   return (
-    <span style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data)}>
+    <span style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data, store)}>
       {props?.options?.map(({ value: itemValue, label, disabled }) => {
         const optionStyle = Object.assign({}, baseStyle.main, disabled ? baseStyle.disabled : {});
         return (

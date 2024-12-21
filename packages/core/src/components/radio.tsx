@@ -39,7 +39,7 @@ export const Radio = ({ id, props, styles = { main: {} }, classes = {}, meta, va
   const mainStyle = Object.assign({}, styles.main);
 
   const SchemasContext = getSchemasContext();
-  const { changeSchemasValue } = libraries.useContext(SchemasContext);
+  const { changeSchemasValue, store } = libraries.useContext(SchemasContext);
 
   const onChange = (newVal: BaseValue) => {
     if (isFunction(props?.onChange)) {
@@ -49,7 +49,7 @@ export const Radio = ({ id, props, styles = { main: {} }, classes = {}, meta, va
   };
 
   return (
-    <span style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data)}>
+    <span style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data, store)}>
       {props?.options?.map(({ value: itemValue, label, disabled }) => {
         const optionStyle = Object.assign({}, baseStyle.main, disabled ? baseStyle.disabled : {});
         return (

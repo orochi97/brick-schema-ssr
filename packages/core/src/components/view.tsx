@@ -1,4 +1,5 @@
 import type { ComponentItem, ComponentMap, EventContext, InjectLib, ViewProps } from '../types';
+import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 import { SlotItemChild } from './@common';
@@ -48,6 +49,9 @@ export const View = ({ props, children, styles = { main: {} }, classes = {}, met
 
   const $ref = libraries.useRef<HTMLElement>(null);
 
+  const SchemasContext = getSchemasContext();
+  const { store } = libraries.useContext(SchemasContext);
+
   libraries.useEffect(() => {
     if ($ref.current) {
       const observer = new IntersectionObserver((entries) => {
@@ -60,8 +64,8 @@ export const View = ({ props, children, styles = { main: {} }, classes = {}, met
   }, []);
 
   return (
-    <div style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data)}>
-      <SlotItemChild meta={meta} slots={children} />
+    <div style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data, store)}>
+      <SlotItemChild meta={meta} store={store} slots={children} />
     </div>
   );
 };

@@ -18,7 +18,11 @@ export const init = async (RenderSdk: typeof ReactSdk | typeof SolidSdk | typeof
   const $root = document.getElementById('root');
 
   if ($root && schemas) {
-    const sdk = new RenderSdk({ schemas, dependency: { http, consts } });
+    const sdk = new RenderSdk({
+      schemas,
+      dependency: { http, consts },
+      store: { isLogin: false, loginText: '未登录' },
+    });
     if (process.env.RENDER_TYPE === 'csr') {
       sdk.createRoot($root);
     } else if (process.env.RENDER_TYPE === 'ssr') {

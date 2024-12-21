@@ -1,4 +1,5 @@
 import type { BaseStyles, ComponentItem, EventContext, InjectLib, TextProps } from '../types';
+import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 
@@ -29,6 +30,9 @@ export const initTextSchemas = (compProps: ComponentItem, lib: InjectLib) => {
 export const Text = ({ props, styles = { main: {} }, classes = {}, meta }: TextProps) => {
   const mainStyle: BaseStyles = Object.assign({}, baseStyle.main, styles.main);
 
+  const SchemasContext = getSchemasContext();
+  const { store } = libraries.useContext(SchemasContext);
+
   const onClick = () => {
     if (isFunction(props?.onClick)) {
       props?.onClick({
@@ -39,7 +43,11 @@ export const Text = ({ props, styles = { main: {} }, classes = {}, meta }: TextP
   };
 
   return (
-    <div style={libraries.useStyles(mainStyle)} className={libraries.useClasses(classes, meta?.data)} onClick={onClick}>
+    <div
+      style={libraries.useStyles(mainStyle)}
+      className={libraries.useClasses(classes, meta?.data, store)}
+      onClick={onClick}
+    >
       {props?.label || baseProps.label}
     </div>
   );

@@ -36,7 +36,7 @@ export const Select = ({ id, props, styles = { main: {} }, classes = {}, meta, v
   const mainStyle = Object.assign({}, styles.main);
 
   const SchemasContext = getSchemasContext();
-  const { changeSchemasValue } = libraries.useContext(SchemasContext);
+  const { changeSchemasValue, store } = libraries.useContext(SchemasContext);
 
   const onChange = (e: Event) => {
     const target = e.target as HTMLSelectElement;
@@ -51,7 +51,7 @@ export const Select = ({ id, props, styles = { main: {} }, classes = {}, meta, v
   return (
     <select
       style={libraries.useStyles(mainStyle)}
-      className={libraries.useClasses(classes, meta?.data)}
+      className={libraries.useClasses(classes, meta?.data, store)}
       value={value}
       onChange={onChange}
     >

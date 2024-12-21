@@ -1,4 +1,5 @@
 import type { ComponentItem, EventContext, ImageProps, InjectLib } from '../types';
+import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 
@@ -28,6 +29,9 @@ export const initImageSchemas = (compProps: ComponentItem, lib: InjectLib) => {
 export const Image = ({ props, styles = { main: {} }, classes = {}, meta }: ImageProps) => {
   const mainStyle = Object.assign({}, baseStyle.main, 'main' in styles ? styles.main : {});
 
+  const SchemasContext = getSchemasContext();
+  const { store } = libraries.useContext(SchemasContext);
+
   const onClick = () => {
     if (isFunction(props?.onClick)) {
       props?.onClick({
@@ -43,7 +47,7 @@ export const Image = ({ props, styles = { main: {} }, classes = {}, meta }: Imag
       width={props?.width}
       height={props?.height}
       style={libraries.useStyles(mainStyle)}
-      className={libraries.useClasses(classes, meta?.data)}
+      className={libraries.useClasses(classes, meta?.data, store)}
       onClick={onClick}
     />
   );

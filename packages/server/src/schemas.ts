@@ -32,6 +32,18 @@ export const schemas: Schemas = {
     .flex {
       display: flex !important;
     }
+    .show {
+      display: block !important;
+    }
+    .hide {
+      display: none !important;
+    }
+    .login-text {
+      color: #2db7f5;
+    }
+    .un-login-text {
+      color: #f50;
+    }
   `,
   components: [
     {
@@ -123,6 +135,25 @@ export const schemas: Schemas = {
       },
     },
     {
+      id: 10090,
+      component: 'Text',
+      extern: {
+        dataMap: {
+          label: 'loginText',
+        },
+      },
+      props: {},
+      styles: {
+        main: {
+          fontSize: 30,
+        },
+      },
+      classes: {
+        'login-text': 'isLogin',
+        'un-login-text': '!isLogin',
+      },
+    },
+    {
       id: 7,
       component: 'List',
       props: {
@@ -182,6 +213,7 @@ export const schemas: Schemas = {
           extern: {
             dataMap: {
               src: 'src',
+              disabled: 'disabled',
             },
           },
         },
@@ -271,9 +303,32 @@ export const schemas: Schemas = {
           return async function(context) {
             const { sys, http, consts, parent } = lib;
             const listComp = sys.findComp(7);
-            console.info(listComp.props.list.filter(i => i.disabled).map(i => i.index))
+            const isLogin = sys.getStore()?.isLogin;
+            if (isLogin) {
+              console.info(listComp.props.list.filter(i => i.disabled).map(i => i.index));
+            } else {
+              console.info('未登录');
+            }
           }
         `,
+      },
+    },
+    {
+      id: 9,
+      component: 'Button',
+      props: {
+        type: 'default',
+        label: 'Login',
+        onClick: `
+          return async function(context) {
+            const { sys } = lib;
+            sys.setStore({ isLogin: true, loginText: '已登录' });
+          }
+        `,
+      },
+      classes: {
+        show: '!isLogin',
+        hide: 'isLogin',
       },
     },
   ],

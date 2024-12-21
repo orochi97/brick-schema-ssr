@@ -5,6 +5,7 @@ import type {
   BaseValue,
   ClassNames,
   ComponentItem,
+  ContextMeta,
   UnionProps,
 } from './component';
 
@@ -27,7 +28,7 @@ export interface Libraries {
   useContext: <T>(c: Context<T>) => T;
   createContext: <T>(defaultValue: T) => Context<T>;
   useStyles: (s: BaseStyles) => BaseStyles;
-  useClasses: (c: BaseClasses, data?: BaseObject) => string;
+  useClasses: (c: BaseClasses, data?: ContextMeta['data'], store?: Store) => string;
 }
 
 export interface Schemas {
@@ -38,6 +39,8 @@ export interface Schemas {
   components: ComponentItem[];
 }
 
+export type Store = BaseObject;
+
 export type SetPropsFun = (id: number, props: UnionProps) => void;
 
 export type SetValueFun = (id: number, value?: BaseValue | BaseValue[]) => void;
@@ -46,22 +49,30 @@ export type SetClassFun = (id: number, classNames: ClassNames) => void;
 
 export type FindComp = (id: number) => ComponentItem | undefined;
 
+export type SetStore = (s: Partial<Store>) => void;
+
+export type GetStore = () => Store;
+
 export type InjectDependentFun = (p: {
   findComp: FindComp;
   setProps: SetPropsFun;
   setValue: SetValueFun;
   addClasses: SetClassFun;
   removeClasses: SetClassFun;
+  getStore: GetStore;
+  setStore: SetStore;
 }) => void;
 
 export interface AppProps {
   schemas: Schemas;
   injectDependentFun: InjectDependentFun;
+  store: Store;
 }
 
 export interface SdkConstructorParams {
   schemas: Schemas;
   dependency: BaseObject;
+  store?: Store;
 }
 
 type Relation = {

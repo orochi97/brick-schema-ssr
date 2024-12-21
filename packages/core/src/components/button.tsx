@@ -1,4 +1,5 @@
 import type { BaseStyles, ButtonProps, ComponentItem, EventContext, InjectLib } from '../types';
+import { getSchemasContext } from '../app/context';
 import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 
@@ -65,6 +66,9 @@ export const Button = ({ props, styles = { main: {} }, classes = {}, meta }: But
     styles.main,
   );
 
+  const SchemasContext = getSchemasContext();
+  const { store } = libraries.useContext(SchemasContext);
+
   const onClick = () => {
     if (isFunction(props?.onClick)) {
       props?.onClick({
@@ -78,7 +82,7 @@ export const Button = ({ props, styles = { main: {} }, classes = {}, meta }: But
     <button
       disabled={props.disabled}
       style={libraries.useStyles(mainStyle)}
-      className={libraries.useClasses(classes, meta?.data)}
+      className={libraries.useClasses(classes, meta?.data, store)}
       onClick={onClick}
     >
       {props?.label || baseProps.label}
