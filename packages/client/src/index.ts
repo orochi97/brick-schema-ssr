@@ -10,6 +10,8 @@ const http = createHttp(fetch.bind(window));
 
 const consts = { SERVER_URL: 'http://localhost:3000' };
 
+const store = { isLogin: false, loginText: '未登录' };
+
 export const init = async (RenderSdk: typeof ReactSdk | typeof SolidSdk | typeof VueSdk) => {
   const schemas = await fetch('/api/schemas').then((res) => res.json());
 
@@ -20,8 +22,8 @@ export const init = async (RenderSdk: typeof ReactSdk | typeof SolidSdk | typeof
   if ($root && schemas) {
     const sdk = new RenderSdk({
       schemas,
+      store,
       dependency: { http, consts },
-      store: { isLogin: false, loginText: '未登录' },
     });
     if (process.env.RENDER_TYPE === 'csr') {
       sdk.createRoot($root);

@@ -34,6 +34,8 @@ export const libraries: Libraries = {
             newCls[key] = reverseValue(!!data[value], isOpposite);
           } else if (value in store) {
             newCls[key] = reverseValue(!!store[value], isOpposite);
+          } else {
+            newCls[key] = false;
           }
         }
       }

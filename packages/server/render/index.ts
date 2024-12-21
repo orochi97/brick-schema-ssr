@@ -7,8 +7,12 @@ import fetch from 'node-fetch';
 
 const http = createHttp(fetch);
 
+const consts = { SERVER_URL: 'http://localhost:3000' };
+
+const store = { isLogin: false, loginText: '未登录' };
+
 export const render = (RenderSdk: typeof ReactSdk | typeof SolidSdk | typeof VueSdk, schemas: Schemas) => {
-  const sdk = new RenderSdk({ schemas, dependency: { http } });
+  const sdk = new RenderSdk({ schemas, store, dependency: { http, consts } });
 
   return sdk.renderToString();
 };
