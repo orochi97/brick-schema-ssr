@@ -29,6 +29,7 @@
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "csso": "^5.0.5",
+    "i18next": "^24.2.1",
     "koa": "^2.15.3",
     "koa-mount": "^4.0.0",
     "koa-router": "^13.0.1",

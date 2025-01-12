@@ -18,8 +18,9 @@
   "license": "ISC",
   "dependencies": {
     "@brick/react": "workspace:*",
-    "@brick/vue": "workspace:*",
     "@brick/solid": "workspace:*",
+    "@brick/vue": "workspace:*",
+    "i18next": "^24.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "solid-js": "^1.9.3",

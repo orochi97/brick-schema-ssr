@@ -12,7 +12,7 @@ export const schemas: Schemas = {
         lib.sys.setProps(7, { list: list.map((item, index) => ({
           ...item,
           index,
-          label: 'Image' + (index + 1),
+          label: 'image{{index}}',
           disabled: false,
         })) });
       }
@@ -51,7 +51,7 @@ export const schemas: Schemas = {
       component: 'Button',
       props: {
         type: 'primary',
-        label: '按钮',
+        label: 'button',
         onClick: `
           return async function() {
             const { http, consts } = lib;
@@ -169,7 +169,7 @@ export const schemas: Schemas = {
               list: list.concat(newList.map((item, index) => ({
                 ...item,
                 index: index + len,
-                label: 'Image' + (index + len + 1),
+                label: 'image{{index}}',
                 disabled: false,
               }))),
             });
@@ -292,7 +292,7 @@ export const schemas: Schemas = {
       component: 'Button',
       props: {
         type: 'primary',
-        label: 'Confirm',
+        label: 'confirm',
         onClick: `
           return async function(context) {
             const { sys, http, consts, parent } = lib;
@@ -312,11 +312,11 @@ export const schemas: Schemas = {
       component: 'Button',
       props: {
         type: 'default',
-        label: 'Login',
+        label: 'login',
         onClick: `
           return async function(context) {
             const { sys } = lib;
-            sys.setStore({ isLogin: true, loginText: '已登录' });
+            sys.setStore({ isLogin: true, loginText: 'hasLogin' });
           }
         `,
       },
@@ -326,4 +326,31 @@ export const schemas: Schemas = {
       },
     },
   ],
+};
+
+export const langResource = {
+  en: {
+    translation: {
+      button: 'Button',
+      login: 'Login',
+      hasLogin: 'HasLogin',
+      notLogin: 'NotLogin',
+      delete: 'Delete',
+      deleted: 'Deleted',
+      confirm: 'Confirm',
+      'image{{index}}': 'No.{{index}}Image',
+    },
+  },
+  zh: {
+    translation: {
+      button: '按钮',
+      login: '登录',
+      hasLogin: '已登录',
+      notLogin: '未登录',
+      delete: '删除',
+      deleted: '已删除',
+      confirm: '确定',
+      'image{{index}}': '第{{index}}图片',
+    },
+  },
 };

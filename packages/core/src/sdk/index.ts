@@ -16,15 +16,21 @@ import type {
   Store,
 } from '../types';
 import { componentMap } from '../components';
+import { injectLibraries } from '../library';
 
 export abstract class BaseSdk {
   protected schemas: Schemas;
   private declare store: Store;
   private dependency: SdkConstructorParams['dependency'];
-  constructor({ schemas, store, dependency }: SdkConstructorParams) {
+  constructor({ schemas, store, dependency, i18n }: SdkConstructorParams) {
     this.schemas = schemas;
     this.store = store || {};
     this.dependency = dependency;
+    if (i18n) {
+      injectLibraries({
+        useI18n: i18n,
+      });
+    }
   }
   async initSchemas() {
     await new Function('lib', this.schemas.app.init)({

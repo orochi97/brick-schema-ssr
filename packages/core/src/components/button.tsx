@@ -5,7 +5,7 @@ import { isFunction, isString } from '../utils';
 
 const baseProps = {
   disabled: false,
-  label: 'Button',
+  label: 'button',
   type: 'default',
   onClick: `return async (context) => {
     console.info('Button onClick', context);
@@ -85,7 +85,7 @@ export const Button = ({ props, styles = { main: {} }, classes = {}, meta }: But
       className={libraries.useClasses(classes, meta?.data, store)}
       onClick={onClick}
     >
-      {props?.label || baseProps.label}
+      {libraries.useI18n(props?.label || baseProps.label, Object.assign({}, meta?.data, store))}
     </button>
   );
 };

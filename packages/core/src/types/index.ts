@@ -30,6 +30,7 @@ export interface Libraries {
   createContext: <T>(defaultValue: T) => Context<T>;
   useStyles: (s: BaseStyles) => BaseStyles;
   useClasses: (c: BaseClasses, data?: ContextMeta['data'], store?: Store) => string;
+  useI18n: (key: string, data: BaseObject) => string;
 }
 
 export interface Schemas {
@@ -74,6 +75,7 @@ export interface SdkConstructorParams {
   schemas: Schemas;
   dependency: BaseObject;
   store?: Store;
+  i18n?: (key: string) => string;
 }
 
 type Relation = {

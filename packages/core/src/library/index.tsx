@@ -43,6 +43,7 @@ export const libraries: Libraries = {
     }
     return '';
   },
+  useI18n: (key) => key,
 };
 
 export const injectLibraries = (lib: Partial<Libraries>) => {

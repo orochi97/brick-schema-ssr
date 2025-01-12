@@ -4,7 +4,7 @@ import { libraries } from '../library';
 import { isFunction, isString } from '../utils';
 
 const baseProps = {
-  label: 'Text',
+  label: 'text',
   onClick: `return async (context) => {
     console.info('Text onClick', context);
   }`,
@@ -48,7 +48,7 @@ export const Text = ({ props, styles = { main: {} }, classes = {}, meta }: TextP
       className={libraries.useClasses(classes, meta?.data, store)}
       onClick={onClick}
     >
-      {props?.label || baseProps.label}
+      {libraries.useI18n(props?.label || baseProps.label, Object.assign({}, meta?.data, store))}
     </div>
   );
 };

@@ -4,7 +4,7 @@ import koaMount from 'koa-mount';
 import koaRouter from 'koa-router';
 import koaStatic from 'koa-static';
 
-import { clientDir, getSchemas } from './app/common';
+import { clientDir, getLangResource, getSchemas } from './app/common';
 import reactApp from './app/react';
 import solidApp from './app/solid';
 import vueApp from './app/vue';
@@ -26,6 +26,11 @@ app.use(
 router.get('/schemas', async (ctx) => {
   const schemas = await getSchemas();
   ctx.body = schemas;
+});
+
+router.get('/language', async (ctx) => {
+  const langResource = await getLangResource();
+  ctx.body = langResource;
 });
 
 router.get('/options', async (ctx) => {

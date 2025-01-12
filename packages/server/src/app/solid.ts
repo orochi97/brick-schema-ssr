@@ -1,11 +1,12 @@
 import Koa from 'koa';
 
-import { getSchemas, isDev, renderHtmlString } from './common';
+import { getLangResource, getSchemas, isDev, renderHtmlString } from './common';
 
 const app = new Koa();
 
 app.use(async (ctx) => {
   const schemas = await getSchemas();
+  const langResource = await getLangResource();
 
   let renderToString;
 
@@ -21,8 +22,10 @@ app.use(async (ctx) => {
     renderToString = (await import('@/lib/solid')).renderToString;
   }
 
+  const lng = Array.isArray(ctx.query.lng) ? ctx.query.lng[0] : ctx.query.lng;
+
   ctx.type = 'html';
-  ctx.body = await renderHtmlString(schemas, 'solid', renderToString);
+  ctx.body = await renderHtmlString(schemas, 'solid', renderToString, langResource, lng || 'en');
 });
 
 export default app;
